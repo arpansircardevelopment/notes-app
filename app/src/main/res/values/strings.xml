@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_prompt">Don\'t have an account? Signup here!</string>
+    <string name="login_prompt">Already have an account? Login here!</string>
+
+    <string name="field_cannot_be_empty">Field cannot be empty</string>
+    <string name="email">Email</string>
+    <string name="account_created">Account Created</string>
+    <string name="logged_in">Logged In</string>
+    <string name="log_out">Log Out</string>
+    <string name="update_details">Update Details</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_phone_number">Phone Number</string>
+    <string name="name">Display Name</string>
+    <string name="india_country_code">+91</string>
+    <string name="add_note">Add note</string>
+    <string name="home">Home</string>
+    <string name="account">Account</string>
+    <string name="no_notes_text">Start writing some notes to see them over here</string>
+</resources>

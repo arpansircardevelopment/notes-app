@@ -6,7 +6,7 @@ import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import com.arpansircar.notes_app.presentation.viewmodel.factory.HomeViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 
-class HomeContainer(val firebaseAuth: FirebaseAuth, notesDao: NotesDao) {
+class HomeContainer(firebaseAuth: FirebaseAuth, notesDao: NotesDao) {
 
     private val authInvoker: AuthInvoker = AuthInvoker()
 

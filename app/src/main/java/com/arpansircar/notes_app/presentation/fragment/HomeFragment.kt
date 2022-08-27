@@ -64,13 +64,7 @@ class HomeFragment : Fragment() {
         }
 
         binding?.btAdd?.setOnClickListener {
-            viewModel.addNote(
-                Note(
-                    noteTitle = "Arpan",
-                    noteDetail = "Test note details",
-                    noteCreatedAt = 10010001010
-                )
-            )
+
         }
     }
 

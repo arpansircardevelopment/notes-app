@@ -6,21 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.arpansircar.notes_app.common.NotesApplication
-import com.arpansircar.notes_app.databinding.FragmentHomeBinding
+import com.arpansircar.notes_app.databinding.FragmentAddEditNoteBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.HomeContainer
-import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
-import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
+import com.arpansircar.notes_app.presentation.viewmodel.AddEditNoteViewModel
 
-class HomeFragment : Fragment() {
+class AddEditNoteFragment : Fragment() {
 
     private var appContainer: ApplicationContainer? = null
     private var homeContainer: HomeContainer? = null
 
-    private var binding: FragmentHomeBinding? = null
-    private lateinit var viewModel: HomeViewModel
+    private var binding: FragmentAddEditNoteBinding? = null
+    private lateinit var viewModel: AddEditNoteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +26,8 @@ class HomeFragment : Fragment() {
         homeContainer = appContainer?.homeContainer
         viewModel = ViewModelProvider(
             this,
-            homeContainer?.homeViewModelFactory!!
-        )[HomeViewModel::class.java]
+            homeContainer?.addEditNoteViewModelFactory!!
+        )[AddEditNoteViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -37,34 +35,12 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        viewModel.fetchNotes()
+        binding = FragmentAddEditNoteBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.notesLiveData.observe(viewLifecycleOwner) {
-
-            if (it.isEmpty()) {
-                binding?.llEmpty?.visibility = View.VISIBLE
-                binding?.rvNotes?.visibility = View.GONE
-                return@observe
-            }
-
-            binding?.llEmpty?.visibility = View.GONE
-            binding?.rvNotes?.visibility = View.VISIBLE
-
-            val adapter = HomeAdapter(it)
-            binding?.rvNotes?.apply {
-                setAdapter(adapter)
-                layoutManager = LinearLayoutManager(requireContext())
-            }
-        }
-
-        binding?.btAdd?.setOnClickListener {
-
-        }
     }
 
     override fun onDestroyView() {

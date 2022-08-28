@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
-import com.arpansircar.notes_app.common.ManualDiPracticeApplication
+import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentUserDetailsBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.AuthContainer
@@ -24,7 +24,7 @@ class UserDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as ManualDiPracticeApplication).appContainer
+        appContainer = (requireActivity().application as NotesApplication).appContainer
         authContainer = appContainer?.authContainer
         viewModel = ViewModelProvider(
             this,

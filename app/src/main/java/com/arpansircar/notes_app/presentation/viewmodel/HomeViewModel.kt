@@ -20,10 +20,4 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
             }
         }
     }
-
-    fun addNote(note: Note) {
-        viewModelScope.launch {
-            repository.addNotes(note = note)
-        }
-    }
 }

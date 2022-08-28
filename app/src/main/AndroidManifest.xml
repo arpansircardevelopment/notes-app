@@ -4,7 +4,7 @@
     package="com.arpansircar.notes_app">
 
     <application
-        android:name="com.arpansircar.notes_app.common.ManualDiPracticeApplication"
+        android:name="com.arpansircar.notes_app.common.NotesApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface NotesDao {
 
     @Insert
-    suspend fun insertNote(note: Note)
+    suspend fun insertNote(note: Note): Long
 
     @Query("SELECT * FROM ${ConstantsBase.TABLE_NOTES} ORDER BY ${ConstantsBase.CREATED_AT} DESC")
     fun loadAllNotes(): Flow<List<Note>>

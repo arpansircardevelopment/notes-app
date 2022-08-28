@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.arpansircar.notes_app.R
-import com.arpansircar.notes_app.common.ManualDiPracticeApplication
+import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.ActivityMainBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (application as ManualDiPracticeApplication).appContainer
+        appContainer = (application as NotesApplication).appContainer
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 

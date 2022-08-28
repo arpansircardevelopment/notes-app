@@ -3,6 +3,8 @@ package com.arpansircar.notes_app.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.arpansircar.notes_app.common.DateTimeUtils
+import com.arpansircar.notes_app.common.DateTimeUtils.convertMillisToDateTime
 import com.arpansircar.notes_app.databinding.ItemNoteBinding
 import com.arpansircar.notes_app.domain.models.Note
 
@@ -25,7 +27,7 @@ class HomeAdapter(
         notesList?.get(position)?.let {
             holder.binding.tvTitle.text = it.noteTitle
             holder.binding.tvDetail.text = it.noteDetail
-            holder.binding.tvDateCreated.text = it.noteCreatedAt.toString()
+            holder.binding.tvDateCreated.text = convertMillisToDateTime(it.noteCreatedAt)
         }
     }
 

@@ -28,4 +28,7 @@
     <string name="home">Home</string>
     <string name="account">Account</string>
     <string name="no_notes_text">Start writing some notes to see them over here</string>
+    <string name="enter_note_title">Enter note title here</string>
+    <string name="insert_note">Insert Note</string>
+    <string name="enter_note_detail">Enter note detail here</string>
 </resources>

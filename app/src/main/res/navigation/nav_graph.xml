@@ -73,13 +73,20 @@
             app:popUpTo="@id/fragment_login"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_home_to_add_edit"
+            app:destination="@id/fragment_add_edit" />
+
     </fragment>
 
     <fragment
         android:id="@+id/fragment_account"
         android:name="com.arpansircar.notes_app.presentation.fragment.AccountFragment"
-        tools:layout="@layout/fragment_account">
+        tools:layout="@layout/fragment_account" />
 
-    </fragment>
+    <fragment
+        android:id="@+id/fragment_add_edit"
+        android:name="com.arpansircar.notes_app.presentation.fragment.AddEditNoteFragment"
+        tools:layout="@layout/fragment_add_edit_note" />
 
 </navigation>

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -19,5 +20,21 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
             val position: Long = homeRepository.addNotes(note)
             _notesLiveData.postValue(position)
         }
+    }
+
+    fun validateData(
+        noteTitleEditText: TextInputEditText?,
+        noteDetailEditText: TextInputEditText?
+    ): Boolean {
+        if (noteTitleEditText?.text?.isEmpty() == true) {
+            noteTitleEditText.error = "Field cannot be empty"
+            return false
+        }
+
+        if (noteDetailEditText?.text?.isEmpty() == true) {
+            noteDetailEditText.error = "Field cannot be empty"
+            return false
+        }
+        return true
     }
 }

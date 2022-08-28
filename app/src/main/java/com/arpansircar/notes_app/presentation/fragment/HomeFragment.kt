@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentHomeBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
@@ -63,7 +65,7 @@ class HomeFragment : Fragment() {
         }
 
         binding?.btAdd?.setOnClickListener {
-
+            findNavController().navigate(R.id.action_home_to_add_edit)
         }
     }
 

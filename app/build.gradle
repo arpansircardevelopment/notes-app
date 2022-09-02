@@ -65,6 +65,9 @@ dependencies {
     // Firebase Authentication
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    // Firebase Realtime Database
+    implementation 'com.google.firebase:firebase-database-ktx'
+    
     // Room
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")

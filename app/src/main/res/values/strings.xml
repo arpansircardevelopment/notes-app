@@ -31,4 +31,6 @@
     <string name="enter_note_title">Enter note title here</string>
     <string name="insert_note">Insert Note</string>
     <string name="enter_note_detail">Enter note detail here</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="delete_note">Delete Note</string>
 </resources>

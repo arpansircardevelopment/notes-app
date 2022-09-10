@@ -2,9 +2,12 @@ package com.arpansircar.notes_app.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,10 +17,11 @@ import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentHomeBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.HomeContainer
+import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
 
     private var appContainer: ApplicationContainer? = null
     private var homeContainer: HomeContainer? = null
@@ -67,7 +71,7 @@ class HomeFragment : Fragment() {
             binding?.llEmpty?.visibility = View.GONE
             binding?.rvNotes?.visibility = View.VISIBLE
 
-            val adapter = HomeAdapter(it)
+            val adapter = HomeAdapter(it, this)
             binding?.rvNotes?.apply {
                 setAdapter(adapter)
                 layoutManager = LinearLayoutManager(requireContext())
@@ -79,6 +83,12 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun showMenu(view: View, @MenuRes menuRes: Int, note: Note) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
+        popupMenu.show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
@@ -88,5 +98,9 @@ class HomeFragment : Fragment() {
         super.onDestroy()
         homeContainer = null
         appContainer = null
+    }
+
+    override fun onNotePressed(note: Note, view: View) {
+        showMenu(view, R.menu.note_options_menu, note)
     }
 }

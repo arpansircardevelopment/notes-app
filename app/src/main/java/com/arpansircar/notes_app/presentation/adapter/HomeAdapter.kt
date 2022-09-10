@@ -1,16 +1,22 @@
 package com.arpansircar.notes_app.presentation.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.arpansircar.notes_app.common.DateTimeUtils
 import com.arpansircar.notes_app.common.DateTimeUtils.convertMillisToDateTime
 import com.arpansircar.notes_app.databinding.ItemNoteBinding
 import com.arpansircar.notes_app.domain.models.Note
 
 class HomeAdapter(
-    private val notesList: List<Note>?
+    private val notesList: List<Note>?,
+    private val notePressedListener: NotePressedListener
 ) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+
+    interface NotePressedListener {
+        fun onNotePressed(note: Note, view: View)
+    }
 
     inner class HomeViewHolder(val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -24,10 +30,15 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        notesList?.get(position)?.let {
-            holder.binding.tvTitle.text = it.noteTitle
-            holder.binding.tvDetail.text = it.noteDetail
-            holder.binding.tvDateCreated.text = convertMillisToDateTime(it.noteCreatedAt)
+        notesList?.get(position)?.let { note ->
+            holder.binding.tvTitle.text = note.noteTitle
+            holder.binding.tvDetail.text = note.noteDetail
+            holder.binding.tvDateCreated.text = convertMillisToDateTime(note.noteCreatedAt)
+
+            holder.binding.llRoot.setOnLongClickListener {
+                notePressedListener.onNotePressed(note, it)
+                true
+            }
         }
     }
 

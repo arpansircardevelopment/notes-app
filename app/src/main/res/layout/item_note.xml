@@ -7,8 +7,10 @@
     app:cardElevation="10dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:padding="10dp">
 

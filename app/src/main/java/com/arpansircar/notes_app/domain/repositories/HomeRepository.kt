@@ -12,4 +12,8 @@ class HomeRepository(private val notesDao: NotesDao) {
     suspend fun addNotes(note: Note): Long {
         return notesDao.insertNote(note)
     }
+
+    suspend fun deleteNote(note: Note) {
+        notesDao.deleteNote(note)
+    }
 }

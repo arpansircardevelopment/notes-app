@@ -28,6 +28,7 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
 
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
+    private var adapter: HomeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,9 +72,9 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
             binding?.llEmpty?.visibility = View.GONE
             binding?.rvNotes?.visibility = View.VISIBLE
 
-            val adapter = HomeAdapter(it, this)
+            adapter = HomeAdapter(it, this)
             binding?.rvNotes?.apply {
-                setAdapter(adapter)
+                this.adapter = this@HomeFragment.adapter
                 layoutManager = LinearLayoutManager(requireContext())
             }
         }
@@ -83,9 +84,23 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
         }
     }
 
-    private fun showMenu(view: View, @MenuRes menuRes: Int, note: Note) {
+    private fun showMenu(view: View, @MenuRes menuRes: Int, note: Note, position: Int) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.item_edit -> {
+                }
+
+                R.id.item_delete -> {
+                    viewModel.deleteNote(note)
+                    adapter?.notifyItemRemoved(position)
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
+
         popupMenu.show()
     }
 
@@ -100,7 +115,7 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
         appContainer = null
     }
 
-    override fun onNotePressed(note: Note, view: View) {
-        showMenu(view, R.menu.note_options_menu, note)
+    override fun onNotePressed(note: Note, view: View, position: Int) {
+        showMenu(view, R.menu.note_options_menu, note, position)
     }
 }

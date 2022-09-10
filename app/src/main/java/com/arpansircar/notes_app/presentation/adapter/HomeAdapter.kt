@@ -1,6 +1,5 @@
 package com.arpansircar.notes_app.presentation.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,7 @@ class HomeAdapter(
 ) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     interface NotePressedListener {
-        fun onNotePressed(note: Note, view: View)
+        fun onNotePressed(note: Note, view: View, position: Int)
     }
 
     inner class HomeViewHolder(val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root)
@@ -36,7 +35,7 @@ class HomeAdapter(
             holder.binding.tvDateCreated.text = convertMillisToDateTime(note.noteCreatedAt)
 
             holder.binding.llRoot.setOnLongClickListener {
-                notePressedListener.onNotePressed(note, it)
+                notePressedListener.onNotePressed(note, it, position)
                 true
             }
         }

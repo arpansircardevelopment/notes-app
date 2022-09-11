@@ -5,5 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Notes" parent="Base.Theme.Notes" />
+    <style name="Theme.Notes" parent="Base.Theme.Notes">
+        <item name="fontFamily">@font/montserrat_alternates</item>
+    </style>
+
 </resources>

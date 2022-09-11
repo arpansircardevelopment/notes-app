@@ -8,12 +8,19 @@ import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     private val _notesLiveData: MutableLiveData<Long> = MutableLiveData()
     val notesLiveData: LiveData<Long> = _notesLiveData
+
+    private val _fetchNoteLiveData: MutableLiveData<Note> = MutableLiveData()
+    val fetchNotesLiveData: LiveData<Note> = _fetchNoteLiveData
+
+    private val _updateNoteLiveData: MutableLiveData<Int> = MutableLiveData()
+    val updateNoteLiveData: LiveData<Int> = _updateNoteLiveData
 
     fun addNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,5 +43,20 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
             return false
         }
         return true
+    }
+
+    fun getNote(noteID: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            homeRepository.fetchNote(noteID).collectLatest {
+                _fetchNoteLiveData.postValue(it)
+            }
+        }
+    }
+
+    fun updateNote(note: Note) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val position: Int = homeRepository.updateNote(note)
+            _updateNoteLiveData.postValue(position)
+        }
     }
 }

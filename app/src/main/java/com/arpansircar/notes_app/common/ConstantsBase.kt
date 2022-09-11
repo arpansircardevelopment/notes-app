@@ -18,4 +18,8 @@ object ConstantsBase {
     const val NOTE_DETAIL = "note_detail"
     const val CREATED_AT = "created_at"
 
+    const val NOTE_TYPE = "type"
+    const val NOTE_TYPE_ADD = "add"
+    const val NOTE_TYPE_EDIT = "edit"
+
 }

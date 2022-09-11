@@ -16,4 +16,12 @@ class HomeRepository(private val notesDao: NotesDao) {
     suspend fun deleteNote(note: Note) {
         notesDao.deleteNote(note)
     }
+
+    fun fetchNote(noteId: Int): Flow<Note> {
+        return notesDao.loadNote(noteId)
+    }
+
+    suspend fun updateNote(note: Note): Int {
+        return notesDao.updateNote(note)
+    }
 }

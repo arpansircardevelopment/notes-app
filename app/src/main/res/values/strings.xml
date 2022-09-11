@@ -33,4 +33,5 @@
     <string name="enter_note_detail">Enter note detail here</string>
     <string name="edit_note">Edit Note</string>
     <string name="delete_note">Delete Note</string>
+    <string name="update_note">Update Note</string>
 </resources>

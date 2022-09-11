@@ -8,11 +8,16 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arpansircar.notes_app.R
+import com.arpansircar.notes_app.common.ConstantsBase.NOTE_ID
+import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE
+import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_ADD
+import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_EDIT
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentHomeBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
@@ -80,7 +85,13 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
         }
 
         binding?.btAdd?.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_add_edit)
+            findNavController().navigate(
+                R.id.action_home_to_add_edit,
+                bundleOf(
+                    NOTE_TYPE to NOTE_TYPE_ADD,
+                    NOTE_ID to null
+                )
+            )
         }
     }
 
@@ -91,6 +102,13 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.item_edit -> {
+                    findNavController().navigate(
+                        R.id.action_home_to_add_edit,
+                        bundleOf(
+                            NOTE_TYPE to NOTE_TYPE_EDIT,
+                            NOTE_ID to note.id
+                        )
+                    )
                 }
 
                 R.id.item_delete -> {

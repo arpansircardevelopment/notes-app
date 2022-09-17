@@ -24,6 +24,7 @@ import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.HomeContainer
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
+import com.arpansircar.notes_app.presentation.utils.DialogManager
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
@@ -112,8 +113,10 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
                 }
 
                 R.id.item_delete -> {
-                    viewModel.deleteNote(note)
-                    adapter?.notifyItemRemoved(position)
+                    val manager = DialogManager()
+                    manager.displayDeleteDialog(childFragmentManager)
+//                    viewModel.deleteNote(note)
+//                    adapter?.notifyItemRemoved(position)
                 }
             }
             return@setOnMenuItemClickListener true

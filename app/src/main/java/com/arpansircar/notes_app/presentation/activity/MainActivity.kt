@@ -60,9 +60,9 @@ class MainActivity : AppCompatActivity() {
 
         appContainer?.firebaseAuth?.currentUser?.let {
             if (it.displayName == null || it.displayName?.isEmpty() == true) {
-                navController?.navigate(R.id.action_login_to_user_details)
+                navController?.navigate(R.id.fragment_user_details)
             } else {
-                navController?.navigate(R.id.action_login_to_home)
+                navController?.navigate(R.id.fragment_home)
             }
         }
     }

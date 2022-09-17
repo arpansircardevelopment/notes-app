@@ -66,12 +66,16 @@ class LoginFragment : Fragment() {
                 return@observe
             }
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            binding?.btLogin?.isEnabled = true
+            binding?.signUpPrompt?.isEnabled = true
         }
     }
 
     override fun onResume() {
         super.onResume()
         binding?.btLogin?.setOnClickListener {
+            it.isEnabled = false
+            binding?.signUpPrompt?.isEnabled = false
 
             binding?.cpi?.visibility = View.VISIBLE
             binding?.tilEmail?.clearFocus()

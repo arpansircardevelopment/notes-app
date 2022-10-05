@@ -10,10 +10,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arpansircar.notes_app.R
+import com.arpansircar.notes_app.common.ConstantsBase.DIALOG_TYPE_DELETE
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_ID
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_ADD
@@ -24,10 +26,11 @@ import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.HomeContainer
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
+import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
 import com.arpansircar.notes_app.presentation.utils.DialogManager
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 
-class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
+class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback {
 
     private var appContainer: ApplicationContainer? = null
     private var homeContainer: HomeContainer? = null
@@ -102,6 +105,7 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
 
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
+
                 R.id.item_edit -> {
                     findNavController().navigate(
                         R.id.action_home_to_add_edit,
@@ -113,10 +117,15 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
                 }
 
                 R.id.item_delete -> {
-                    val manager = DialogManager()
-                    manager.displayDeleteDialog(childFragmentManager)
-//                    viewModel.deleteNote(note)
-//                    adapter?.notifyItemRemoved(position)
+                    DialogManager().also {
+                        it.displayDeleteDialog(
+                            childFragmentManager,
+                            this,
+                            DIALOG_TYPE_DELETE,
+                            note,
+                            position
+                        )
+                    }
                 }
             }
             return@setOnMenuItemClickListener true
@@ -138,5 +147,17 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener {
 
     override fun onNotePressed(note: Note, view: View, position: Int) {
         showMenu(view, R.menu.note_options_menu, note, position)
+    }
+
+    override fun onPositiveButtonClicked(
+        dialogType: String,
+        dialogContext: FragmentActivity,
+        note: Note,
+        notePosition: Int
+    ) {
+        if (dialogType == DIALOG_TYPE_DELETE) {
+            viewModel.deleteNote(note)
+            adapter?.notifyItemRemoved(notePosition)
+        }
     }
 }

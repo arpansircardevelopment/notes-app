@@ -3,7 +3,6 @@ package com.arpansircar.notes_app.di
 import android.app.Application
 import com.arpansircar.notes_app.data.local.NotesDao
 import com.arpansircar.notes_app.data.local.NotesDatabase
-import com.google.firebase.auth.FirebaseAuth
 
 class ApplicationContainer(application: Application) {
 
@@ -11,10 +10,12 @@ class ApplicationContainer(application: Application) {
 
     private val notesDao: NotesDao = notesDatabase.notesDao()
 
-    var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseContainer = FirebaseContainer()
 
-    val authContainer: AuthContainer by lazy { AuthContainer(firebaseAuth) }
+    val firebaseAuth by lazy { firebaseContainer.firebaseAuth }
 
-    val homeContainer: HomeContainer by lazy { HomeContainer(firebaseAuth, notesDao) }
+    val authContainer: AuthContainer by lazy { AuthContainer(firebaseContainer.firebaseAuth) }
+
+    val homeContainer: HomeContainer by lazy { HomeContainer(firebaseContainer, notesDao) }
 
 }

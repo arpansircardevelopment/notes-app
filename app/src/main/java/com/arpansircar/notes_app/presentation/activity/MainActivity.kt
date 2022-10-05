@@ -21,8 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var authStateListener: FirebaseAuth.AuthStateListener? = null
 
     private val btNavDestinationList: List<Int> = listOf(
-        R.id.fragment_home,
-        R.id.fragment_account
+        R.id.fragment_home, R.id.fragment_account
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

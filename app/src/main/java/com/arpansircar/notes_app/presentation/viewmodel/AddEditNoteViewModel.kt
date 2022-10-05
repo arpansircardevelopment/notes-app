@@ -10,6 +10,7 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
@@ -24,14 +25,18 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
 
     fun addNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            val position: Long = homeRepository.addNotes(note)
+            val position: Long = withContext(Dispatchers.Default) {
+                homeRepository.addNotes(note)
+            }
+            withContext(Dispatchers.IO) {
+                homeRepository.addNotesOnServer(note, position.toString())
+            }
             _notesLiveData.postValue(position)
         }
     }
 
     fun validateData(
-        noteTitleEditText: TextInputEditText?,
-        noteDetailEditText: TextInputEditText?
+        noteTitleEditText: TextInputEditText?, noteDetailEditText: TextInputEditText?
     ): Boolean {
         if (noteTitleEditText?.text?.isEmpty() == true) {
             noteTitleEditText.error = "Field cannot be empty"

@@ -64,6 +64,9 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
             val position: Int = withContext(Dispatchers.IO) {
                 homeRepository.updateNote(note)
             }
+            withContext(Dispatchers.IO) {
+                homeRepository.addOrUpdateNotesOnServer(note)
+            }
             _updateNoteLiveData.postValue(position)
         }
     }

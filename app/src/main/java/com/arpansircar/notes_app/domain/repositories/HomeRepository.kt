@@ -17,15 +17,6 @@ class HomeRepository(
         return notesDao.insertNote(note)
     }
 
-    fun addOrUpdateNotesOnServer(note: Note) {
-        container
-            .realtimeDb
-            .child("notes")
-            .child(container.firebaseAuth.currentUser?.uid!!)
-            .child(note.noteUUID)
-            .setValue(note)
-    }
-
     suspend fun deleteNote(note: Note) {
         notesDao.deleteNote(note)
     }
@@ -36,5 +27,25 @@ class HomeRepository(
 
     suspend fun updateNote(note: Note): Int {
         return notesDao.updateNote(note)
+    }
+
+    fun addOrUpdateNotesOnServer(note: Note) {
+        if (note.id != null) note.id = null
+
+        container
+            .realtimeDb
+            .child("notes")
+            .child(container.firebaseAuth.currentUser?.uid!!)
+            .child(note.noteUUID)
+            .setValue(note)
+    }
+
+    fun deleteNoteFromServer(note: Note) {
+        container
+            .realtimeDb
+            .child("notes")
+            .child(container.firebaseAuth.currentUser?.uid!!)
+            .child(note.noteUUID)
+            .removeValue()
     }
 }

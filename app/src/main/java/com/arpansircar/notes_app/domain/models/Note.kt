@@ -9,7 +9,7 @@ import com.arpansircar.notes_app.common.ConstantsBase
 data class Note(
     @PrimaryKey
     @ColumnInfo(name = ConstantsBase.NOTE_ID)
-    val id: Int? = null,
+    var id: Int? = null,
 
     @ColumnInfo(name = ConstantsBase.NOTE_UUID)
     val noteUUID: String,

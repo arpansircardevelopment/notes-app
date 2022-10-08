@@ -8,6 +8,7 @@ import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
@@ -24,7 +25,12 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     fun deleteNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteNote(note)
+            withContext(Dispatchers.IO) {
+                repository.deleteNote(note)
+            }
+            withContext(Dispatchers.IO) {
+                repository.deleteNoteFromServer(note)
+            }
         }
     }
 }

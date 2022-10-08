@@ -105,6 +105,7 @@ class AddEditNoteFragment : Fragment() {
     private fun insertNote() {
         if (validateData()) {
             val note = Note(
+                noteUUID = UUID.randomUUID().toString(),
                 noteTitle = binding?.etTitle?.text?.toString()!!,
                 noteDetail = binding?.etDetail?.text?.toString()!!,
                 noteCreatedAt = Calendar.getInstance().timeInMillis
@@ -117,6 +118,7 @@ class AddEditNoteFragment : Fragment() {
         if (validateData()) {
             val updatedNote = Note(
                 id = note?.id,
+                noteUUID = note?.noteUUID!!,
                 noteTitle = binding?.etTitle?.text?.toString()!!,
                 noteDetail = binding?.etDetail?.text?.toString()!!,
                 noteCreatedAt = note?.noteCreatedAt!!

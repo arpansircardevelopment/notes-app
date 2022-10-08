@@ -17,12 +17,12 @@ class HomeRepository(
         return notesDao.insertNote(note)
     }
 
-    fun addOrUpdateNotesOnServer(note: Note, position: String) {
+    fun addOrUpdateNotesOnServer(note: Note) {
         container
             .realtimeDb
             .child("notes")
             .child(container.firebaseAuth.currentUser?.uid!!)
-            .child(position)
+            .child(note.noteUUID)
             .setValue(note)
     }
 

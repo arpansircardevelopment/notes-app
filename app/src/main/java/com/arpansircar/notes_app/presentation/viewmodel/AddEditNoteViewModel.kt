@@ -29,7 +29,7 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
                 homeRepository.addNotes(note)
             }
             withContext(Dispatchers.IO) {
-                homeRepository.addOrUpdateNotesOnServer(note, position.toString())
+                homeRepository.addOrUpdateNotesOnServer(note)
             }
             _notesLiveData.postValue(position)
         }

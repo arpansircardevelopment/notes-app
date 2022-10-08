@@ -12,6 +12,7 @@ object ConstantsBase {
     const val NOTES_DATABASE = "notes_database"
     const val TABLE_NOTES = "notes"
     const val NOTE_ID = "note_id"
+    const val NOTE_UUID = "note_uuid"
     const val NOTE_TITLE = "note_title"
     const val NOTE_DETAIL = "note_detail"
     const val CREATED_AT = "created_at"

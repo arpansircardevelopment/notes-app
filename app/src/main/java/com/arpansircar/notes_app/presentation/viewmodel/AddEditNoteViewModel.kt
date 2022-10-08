@@ -25,18 +25,19 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
 
     fun addNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            val position: Long = withContext(Dispatchers.Default) {
+            val position: Long = withContext(Dispatchers.IO) {
                 homeRepository.addNotes(note)
             }
             withContext(Dispatchers.IO) {
-                homeRepository.addNotesOnServer(note, position.toString())
+                homeRepository.addOrUpdateNotesOnServer(note, position.toString())
             }
             _notesLiveData.postValue(position)
         }
     }
 
     fun validateData(
-        noteTitleEditText: TextInputEditText?, noteDetailEditText: TextInputEditText?
+        noteTitleEditText: TextInputEditText?,
+        noteDetailEditText: TextInputEditText?
     ): Boolean {
         if (noteTitleEditText?.text?.isEmpty() == true) {
             noteTitleEditText.error = "Field cannot be empty"
@@ -60,7 +61,9 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
 
     fun updateNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            val position: Int = homeRepository.updateNote(note)
+            val position: Int = withContext(Dispatchers.IO) {
+                homeRepository.updateNote(note)
+            }
             _updateNoteLiveData.postValue(position)
         }
     }

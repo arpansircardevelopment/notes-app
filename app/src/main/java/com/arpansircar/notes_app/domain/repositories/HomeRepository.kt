@@ -17,7 +17,7 @@ class HomeRepository(
         return notesDao.insertNote(note)
     }
 
-    fun addNotesOnServer(note: Note, position: String) {
+    fun addOrUpdateNotesOnServer(note: Note, position: String) {
         container
             .realtimeDb
             .child("notes")

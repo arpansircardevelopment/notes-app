@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.arpansircar.notes_app.common.DateTimeUtils.convertMillisToDateTime
+import com.arpansircar.notes_app.common.utils.DateTimeUtils.convertMillisToDateTime
 import com.arpansircar.notes_app.databinding.ItemNoteBinding
 import com.arpansircar.notes_app.domain.models.Note
 

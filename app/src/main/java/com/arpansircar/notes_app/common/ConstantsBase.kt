@@ -30,4 +30,10 @@ object ConstantsBase {
     const val DATASTORE_NAME = "sync_datastore"
     const val KEY_IS_SYNCED = "is_synced"
 
+    // firebase values
+    const val FIREBASE_NOTE_UUID = "noteUUID"
+    const val FIREBASE_NOTE_TITLE = "noteTitle"
+    const val FIREBASE_NOTE_DETAIL = "noteDetail"
+    const val FIREBASE_NOTE_CREATED_AT = "noteCreatedAt"
+
 }

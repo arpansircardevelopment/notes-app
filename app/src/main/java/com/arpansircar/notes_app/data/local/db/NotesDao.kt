@@ -11,6 +11,9 @@ interface NotesDao {
     @Insert
     suspend fun insertNote(note: Note): Long
 
+    @Insert
+    suspend fun insertNotes(notesList: List<Note>)
+
     @Query("SELECT * FROM ${ConstantsBase.TABLE_NOTES} ORDER BY ${ConstantsBase.CREATED_AT} DESC")
     fun loadAllNotes(): Flow<List<Note>>
 

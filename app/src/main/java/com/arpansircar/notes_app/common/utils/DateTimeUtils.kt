@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.common
+package com.arpansircar.notes_app.common.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

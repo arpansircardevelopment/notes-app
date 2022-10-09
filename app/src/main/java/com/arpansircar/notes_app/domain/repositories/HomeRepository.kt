@@ -1,5 +1,6 @@
 package com.arpansircar.notes_app.domain.repositories
 
+import com.arpansircar.notes_app.common.utils.FirebaseUtils
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
 import com.arpansircar.notes_app.di.FirebaseContainer
@@ -21,6 +22,10 @@ class HomeRepository(
         return notesDao.insertNote(note)
     }
 
+    private suspend fun insertNotes(notesList: List<Note>) {
+        notesDao.insertNotes(notesList)
+    }
+
     suspend fun deleteNote(note: Note) {
         notesDao.deleteNote(note)
     }
@@ -33,13 +38,16 @@ class HomeRepository(
         return notesDao.updateNote(note)
     }
 
-    suspend fun readNotesFromServer(): DataSnapshot {
-        return container
+    suspend fun readNotesFromServer() {
+        val snapshot = container
             .realtimeDb
             .child("notes")
             .child(container.firebaseAuth.currentUser?.uid!!)
             .get()
             .await()
+
+        insertNotes(FirebaseUtils.convertSnapshotToObject(snapshot))
+        datastoreContainer.writeToDataStore(true)
     }
 
     fun addOrUpdateNotesOnServer(note: Note) {

@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arpansircar.notes_app.common.utils.FirebaseUtils
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,20 +37,8 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     }
 
     fun downloadNotes() {
-        val notesList: MutableList<Note?> = mutableListOf()
-
         viewModelScope.launch(Dispatchers.IO) {
-            val snapshot: DataSnapshot = repository.readNotesFromServer()
-            for (abc: DataSnapshot in snapshot.children) {
-                notesList.add(
-                    Note(
-                        noteUUID = abc.child("noteUUID").value.toString(),
-                        noteTitle = abc.child("noteTitle").value.toString(),
-                        noteDetail = abc.child("noteDetail").value.toString(),
-                        noteCreatedAt = abc.child("noteCreatedAt").value.toString().toLong()
-                    )
-                )
-            }
+            repository.readNotesFromServer()
         }
     }
 

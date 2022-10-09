@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
 import androidx.core.os.bundleOf
@@ -48,6 +49,8 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
             homeContainer?.homeViewModelFactory!!
         )[HomeViewModel::class.java]
 
+        syncData()
+
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -85,6 +88,12 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
             binding?.rvNotes?.apply {
                 this.adapter = this@HomeFragment.adapter
                 layoutManager = LinearLayoutManager(requireContext())
+            }
+        }
+
+        viewModel.syncedLiveData.observe(viewLifecycleOwner) {
+            if (!it) {
+                downloadNotesData()
             }
         }
 
@@ -143,6 +152,14 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
         super.onDestroy()
         homeContainer = null
         appContainer = null
+    }
+
+    private fun syncData() {
+        viewModel.isSynced()
+    }
+
+    private fun downloadNotesData() {
+        viewModel.downloadNotes()
     }
 
     override fun onNotePressed(note: Note, view: View, position: Int) {

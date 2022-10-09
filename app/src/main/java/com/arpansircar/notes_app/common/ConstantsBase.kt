@@ -26,4 +26,8 @@ object ConstantsBase {
     const val DIALOG_TYPE_DELETE = "delete_dialog"
     const val DIALOG_TYPE_EXIT = "exit_dialog"
 
+    // SharedPreferences Constants
+    const val DATASTORE_NAME = "sync_datastore"
+    const val KEY_IS_SYNCED = "is_synced"
+
 }

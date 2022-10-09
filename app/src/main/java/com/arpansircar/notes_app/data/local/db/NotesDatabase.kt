@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.data.local
+package com.arpansircar.notes_app.data.local.db
 
 import android.app.Application
 import androidx.room.Database

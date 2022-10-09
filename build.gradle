@@ -5,6 +5,7 @@ buildscript {
     ext.firebase_bom_version = "30.5.0"
     ext.coroutines_play_version = "1.1.1"
     ext.room_version = "2.4.3"
+    ext.datastore_version = "1.0.0"
 
     repositories {
         google()  // Google's Maven repository

@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.data.local
+package com.arpansircar.notes_app.data.local.db
 
 import androidx.room.*
 import com.arpansircar.notes_app.common.ConstantsBase

@@ -10,6 +10,7 @@ import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

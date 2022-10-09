@@ -39,6 +39,8 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
     private lateinit var viewModel: HomeViewModel
     private var adapter: HomeAdapter? = null
 
+    private var dialogManager: DialogManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as NotesApplication).appContainer
@@ -48,7 +50,7 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
             homeContainer?.homeViewModelFactory!!
         )[HomeViewModel::class.java]
 
-        syncData()
+        dialogManager = DialogManager()
 
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
@@ -66,6 +68,7 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        syncData()
         viewModel.fetchNotes()
         return binding?.root
     }
@@ -88,10 +91,17 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
                 this.adapter = this@HomeFragment.adapter
                 layoutManager = LinearLayoutManager(requireContext())
             }
+
+            dialogManager?.hideProgressDialog()
         }
 
         viewModel.syncedLiveData.observe(viewLifecycleOwner) {
+            dialogManager?.hideProgressDialog()
             if (!it) {
+                dialogManager?.showProgressDialog(
+                    childFragmentManager,
+                    getString(R.string.loading_your_notes)
+                )
                 downloadNotesData()
             }
         }
@@ -149,11 +159,16 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
 
     override fun onDestroy() {
         super.onDestroy()
+        dialogManager = null
         homeContainer = null
         appContainer = null
     }
 
     private fun syncData() {
+        dialogManager?.showProgressDialog(
+            childFragmentManager,
+            getString(R.string.syncing_your_data)
+        )
         viewModel.isSynced()
     }
 

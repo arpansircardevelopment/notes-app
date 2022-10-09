@@ -37,4 +37,8 @@
     <string name="delete_dialog_message">Are you sure that you want to delete this note?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+
+    <string name="loading_your_notes">Loading Your Notes</string>
+    <string name="syncing_your_data">Syncing Your Data</string>
+
 </resources>

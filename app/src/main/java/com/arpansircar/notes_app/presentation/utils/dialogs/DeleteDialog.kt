@@ -1,8 +1,8 @@
 package com.arpansircar.notes_app.presentation.utils.dialogs
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.arpansircar.notes_app.databinding.DialogDeleteNoteBinding
 import com.arpansircar.notes_app.domain.models.Note

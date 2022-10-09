@@ -73,8 +73,4 @@ class HomeRepository(
     fun isDataSynced(): Flow<Boolean> {
         return datastoreContainer.syncedKeyFlow
     }
-
-    suspend fun setDataSynced(isSynced: Boolean) {
-        datastoreContainer.writeToDataStore(isSynced)
-    }
 }

@@ -30,12 +30,6 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 
-    fun setSynced(isDataSynced: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.setDataSynced(isDataSynced)
-        }
-    }
-
     fun downloadNotes() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.readNotesFromServer()

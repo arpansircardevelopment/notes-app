@@ -40,5 +40,8 @@
 
     <string name="loading_your_notes">Loading Your Notes</string>
     <string name="syncing_your_data">Syncing Your Data</string>
+    <string name="my_profile">My Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="sign_out">Sign Out</string>
 
 </resources>

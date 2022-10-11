@@ -6,9 +6,11 @@ buildscript {
     ext.coroutines_play_version = "1.1.1"
     ext.room_version = "2.4.3"
     ext.datastore_version = "1.0.0"
+    ext.avatarview_version = "1.0.4"
 
     repositories {
         google()  // Google's Maven repository
+        mavenCentral()
     }
 
     dependencies {

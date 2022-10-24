@@ -9,15 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
-import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentLoginBinding
-import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.AuthContainer
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
 
 class LoginFragment : Fragment() {
 
-    private var appContainer: ApplicationContainer? = null
     private var authContainer: AuthContainer? = null
 
     private var binding: FragmentLoginBinding? = null
@@ -25,18 +22,24 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as NotesApplication).appContainer
-        authContainer = appContainer?.authContainer
+        authContainer = AuthContainer()
+
+        if (authContainer?.firebaseContainer?.currentUser != null) {
+            if (authContainer?.firebaseContainer?.currentUser?.displayName == null || authContainer?.firebaseContainer?.currentUser?.displayName?.isEmpty() == true) {
+                findNavController().navigate(R.id.fragment_user_details)
+            } else {
+                findNavController().navigate(R.id.fragment_home)
+
+            }
+        }
+
         viewModel = ViewModelProvider(
-            this,
-            authContainer?.loginViewModelFactory!!
+            this, authContainer?.loginViewModelFactory!!
         )[LoginViewModel::class.java]
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding?.root
@@ -53,12 +56,10 @@ class LoginFragment : Fragment() {
 
             if (it == null) {
                 Toast.makeText(
-                    requireContext(),
-                    getString(R.string.logged_in),
-                    Toast.LENGTH_SHORT
+                    requireContext(), getString(R.string.logged_in), Toast.LENGTH_SHORT
                 ).show()
 
-                if (authContainer?.firebaseAuth?.currentUser?.displayName == null) {
+                if (authContainer?.firebaseContainer?.firebaseAuth?.currentUser?.displayName == null) {
                     findNavController().navigate(R.id.action_login_to_user_details)
                 } else {
                     findNavController().navigate(R.id.action_login_to_home)
@@ -97,6 +98,5 @@ class LoginFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         authContainer = null
-        appContainer = null
     }
 }

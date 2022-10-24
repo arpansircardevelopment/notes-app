@@ -34,7 +34,11 @@ class AddEditNoteFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainer = appContainer?.homeContainer
+        homeContainer = HomeContainer(
+            appContainer?.notesDao!!,
+            appContainer?.datastoreContainer!!
+        )
+
         viewModel = ViewModelProvider(
             this,
             homeContainer?.addEditNoteViewModelFactory!!

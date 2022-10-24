@@ -9,21 +9,8 @@ class ApplicationContainer(application: Application) {
 
     private val notesDatabase: NotesDatabase = NotesDatabase.getInstance(application)
 
-    private val notesDao: NotesDao = notesDatabase.notesDao()
+    val notesDao: NotesDao = notesDatabase.notesDao()
 
-    private val firebaseContainer = FirebaseContainer()
+    val datastoreContainer: NotesDatastoreContainer = NotesDatastoreContainer(application)
 
-    private val datastoreContainer: NotesDatastoreContainer = NotesDatastoreContainer(application)
-
-    val firebaseAuth by lazy { firebaseContainer.firebaseAuth }
-
-    val authContainer: AuthContainer by lazy { AuthContainer(firebaseContainer.firebaseAuth) }
-
-    val homeContainer: HomeContainer by lazy {
-        HomeContainer(
-            firebaseContainer,
-            notesDao,
-            datastoreContainer
-        )
-    }
 }

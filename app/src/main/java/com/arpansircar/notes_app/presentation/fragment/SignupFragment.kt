@@ -9,15 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
-import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentSignupBinding
-import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.AuthContainer
 import com.arpansircar.notes_app.presentation.viewmodel.SignupViewModel
 
 class SignupFragment : Fragment() {
 
-    private var appContainer: ApplicationContainer? = null
     private var authContainer: AuthContainer? = null
 
     private var binding: FragmentSignupBinding? = null
@@ -25,8 +22,7 @@ class SignupFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as NotesApplication).appContainer
-        authContainer = appContainer?.authContainer
+        authContainer = AuthContainer()
         viewModel = ViewModelProvider(
             this,
             authContainer?.signupViewModelFactory!!
@@ -95,6 +91,5 @@ class SignupFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         authContainer = null
-        appContainer = null
     }
 }

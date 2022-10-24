@@ -44,7 +44,8 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainer = appContainer?.homeContainer
+        homeContainer = HomeContainer(appContainer?.notesDao!!, appContainer?.datastoreContainer!!)
+
         viewModel = ViewModelProvider(
             this,
             homeContainer?.homeViewModelFactory!!
@@ -155,11 +156,11 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+        dialogManager = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        dialogManager = null
         homeContainer = null
         appContainer = null
     }

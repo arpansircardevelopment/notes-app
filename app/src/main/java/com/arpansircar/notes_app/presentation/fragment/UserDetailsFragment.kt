@@ -16,7 +16,6 @@ import com.arpansircar.notes_app.presentation.viewmodel.UserDetailsViewModel
 
 class UserDetailsFragment : Fragment() {
 
-    private var appContainer: ApplicationContainer? = null
     private var authContainer: AuthContainer? = null
 
     private var binding: FragmentUserDetailsBinding? = null
@@ -24,8 +23,7 @@ class UserDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as NotesApplication).appContainer
-        authContainer = appContainer?.authContainer
+        authContainer = AuthContainer()
         viewModel = ViewModelProvider(
             this,
             authContainer?.userViewModelFactory!!
@@ -74,6 +72,5 @@ class UserDetailsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         authContainer = null
-        appContainer = null
     }
 }

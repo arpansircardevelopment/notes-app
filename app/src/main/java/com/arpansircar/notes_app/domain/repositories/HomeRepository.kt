@@ -5,6 +5,7 @@ import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
 import com.arpansircar.notes_app.di.FirebaseContainer
 import com.arpansircar.notes_app.domain.models.Note
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
@@ -73,4 +74,6 @@ class HomeRepository(
     fun isDataSynced(): Flow<Boolean> {
         return datastoreContainer.syncedKeyFlow
     }
+
+    fun getCurrentUserDetails(): FirebaseUser? = container.currentUser
 }

@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentAccountBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
 import com.arpansircar.notes_app.di.HomeContainer
 import com.arpansircar.notes_app.presentation.viewmodel.AccountViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseUser
 
 class AccountFragment : Fragment() {
@@ -22,6 +25,7 @@ class AccountFragment : Fragment() {
     private var binding: FragmentAccountBinding? = null
     private lateinit var viewModel: AccountViewModel
     private var firebaseAuth: FirebaseAuth? = null
+    private var authStateListener: AuthStateListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +34,25 @@ class AccountFragment : Fragment() {
             appContainer?.notesDao!!, appContainer?.datastoreContainer!!
         )
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            }
+        )
+
         viewModel = ViewModelProvider(
             this, homeContainer?.accountViewModelFactory!!
         )[AccountViewModel::class.java]
 
         firebaseAuth = homeContainer?.firebaseContainer?.firebaseAuth
+        authStateListener = AuthStateListener { auth ->
+            auth.currentUser?.let { it ->
+                setData(it)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -47,7 +65,12 @@ class AccountFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        firebaseAuth?.addAuthStateListener { auth -> auth.currentUser?.let { it -> setData(it) } }
+        firebaseAuth?.addAuthStateListener { authStateListener }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        firebaseAuth?.removeAuthStateListener { authStateListener }
     }
 
     override fun onDestroy() {

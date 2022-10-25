@@ -166,10 +166,6 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
     }
 
     private fun syncData() {
-        dialogManager?.showProgressDialog(
-            childFragmentManager,
-            getString(R.string.syncing_your_data)
-        )
         viewModel.isSynced()
     }
 

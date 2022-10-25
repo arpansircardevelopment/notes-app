@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30sp"
+        android:fontFamily="@font/montserrat_alternates_bold"
+        android:text="@string/edit_profile"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_edit_display_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15sp"
+        android:layout_marginTop="30sp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_title">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_edit_display_name"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15sp"
+            app:srcCompat="@drawable/ic_name_badge" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_edit_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30sp"
+            android:layout_toStartOf="@id/siv_edit_display_name_go"
+            android:layout_toEndOf="@id/siv_edit_display_name"
+            android:fontFamily="@font/montserrat_alternates"
+            android:text="@string/edit_display_name"
+            android:textSize="20sp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_edit_display_name_go"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15sp"
+            android:layout_marginEnd="15sp"
+            app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_edit_email_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15sp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_edit_display_name">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_edit_email_address"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15sp"
+            app:srcCompat="@drawable/ic_email_address" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_edit_email_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30sp"
+            android:layout_toStartOf="@id/siv_edit_email_address_go"
+            android:layout_toEndOf="@id/siv_edit_email_address"
+            android:fontFamily="@font/montserrat_alternates"
+            android:text="@string/edit_email_address"
+            android:textSize="20sp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_edit_email_address_go"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15sp"
+            android:layout_marginEnd="15sp"
+            app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15sp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_edit_email_address">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_edit_password"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15sp"
+            app:srcCompat="@drawable/ic_password" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_edit_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30sp"
+            android:layout_toStartOf="@id/siv_edit_password_go"
+            android:layout_toEndOf="@id/siv_edit_password"
+            android:fontFamily="@font/montserrat_alternates"
+            android:text="@string/edit_password"
+            android:textSize="20sp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_edit_password_go"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15sp"
+            android:layout_marginEnd="15sp"
+            app:srcCompat="@drawable/ic_keyboard_arrow_right" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

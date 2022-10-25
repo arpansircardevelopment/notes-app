@@ -34,13 +34,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    requireActivity().finish()
-                }
-            })
-
         viewModel = ViewModelProvider(
             this, authContainer?.loginViewModelFactory!!
         )[LoginViewModel::class.java]

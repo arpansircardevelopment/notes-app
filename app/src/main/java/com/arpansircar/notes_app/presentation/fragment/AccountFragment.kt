@@ -35,14 +35,12 @@ class AccountFragment : Fragment() {
             appContainer?.notesDao!!, appContainer?.datastoreContainer!!
         )
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
+        requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     requireActivity().finish()
                 }
-            }
-        )
+            })
 
         viewModel = ViewModelProvider(
             this, homeContainer?.accountViewModelFactory!!
@@ -68,6 +66,11 @@ class AccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.rlEditProfile?.setOnClickListener {
             findNavController().navigate(R.id.action_account_to_edit_details_list)
+        }
+
+        binding?.rlSignOut?.setOnClickListener {
+            viewModel.userSignOut()
+            findNavController().navigate(R.id.action_account_to_login)
         }
     }
 

@@ -40,12 +40,9 @@ class HomeRepository(
     }
 
     suspend fun readNotesFromServer() {
-        val snapshot = container
-            .realtimeDb
-            .child("notes")
-            .child(container.firebaseAuth.currentUser?.uid!!)
-            .get()
-            .await()
+        val snapshot =
+            container.realtimeDb.child("notes").child(container.firebaseAuth.currentUser?.uid!!)
+                .get().await()
 
         insertNotes(FirebaseUtils.convertSnapshotToObject(snapshot))
         datastoreContainer.writeToDataStore(true)
@@ -54,21 +51,13 @@ class HomeRepository(
     fun addOrUpdateNotesOnServer(note: Note) {
         if (note.id != null) note.id = null
 
-        container
-            .realtimeDb
-            .child("notes")
-            .child(container.firebaseAuth.currentUser?.uid!!)
-            .child(note.noteUUID)
-            .setValue(note)
+        container.realtimeDb.child("notes").child(container.firebaseAuth.currentUser?.uid!!)
+            .child(note.noteUUID).setValue(note)
     }
 
     fun deleteNoteFromServer(note: Note) {
-        container
-            .realtimeDb
-            .child("notes")
-            .child(container.firebaseAuth.currentUser?.uid!!)
-            .child(note.noteUUID)
-            .removeValue()
+        container.realtimeDb.child("notes").child(container.firebaseAuth.currentUser?.uid!!)
+            .child(note.noteUUID).removeValue()
     }
 
     fun isDataSynced(): Flow<Boolean> {
@@ -77,5 +66,7 @@ class HomeRepository(
 
     fun getCurrentUserDetails(): FirebaseUser? = container.currentUser
 
-    fun getFirebaseAuth(): FirebaseAuth = container.firebaseAuth
+    private fun getFirebaseAuth(): FirebaseAuth = container.firebaseAuth
+
+    fun userSignOut(): Unit = getFirebaseAuth().signOut()
 }

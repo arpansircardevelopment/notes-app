@@ -82,11 +82,22 @@
     <fragment
         android:id="@+id/fragment_account"
         android:name="com.arpansircar.notes_app.presentation.fragment.AccountFragment"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account">
+
+        <action
+            android:id="@+id/action_account_to_edit_details_list"
+            app:destination="@id/fragment_edit_details_list" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_add_edit"
         android:name="com.arpansircar.notes_app.presentation.fragment.AddEditNoteFragment"
         tools:layout="@layout/fragment_add_edit_note" />
+
+    <fragment
+        android:id="@+id/fragment_edit_details_list"
+        android:name="com.arpansircar.notes_app.presentation.fragment.EditDetailsListFragment"
+        tools:layout="@layout/fragment_edit_details_list" />
 
 </navigation>

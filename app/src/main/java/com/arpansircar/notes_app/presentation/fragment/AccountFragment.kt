@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentAccountBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
@@ -61,6 +62,13 @@ class AccountFragment : Fragment() {
         binding = FragmentAccountBinding.inflate(inflater, container, false)
         viewModel.fetchCurrentUserDetails()?.let { setData(it) }
         return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.rlEditProfile?.setOnClickListener {
+            findNavController().navigate(R.id.action_account_to_edit_details_list)
+        }
     }
 
     override fun onStart() {

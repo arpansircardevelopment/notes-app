@@ -98,6 +98,17 @@
     <fragment
         android:id="@+id/fragment_edit_details_list"
         android:name="com.arpansircar.notes_app.presentation.fragment.EditDetailsListFragment"
-        tools:layout="@layout/fragment_edit_details_list" />
+        tools:layout="@layout/fragment_edit_details_list">
+
+        <action
+            android:id="@+id/action_edit_details_list_to_edit_user_detail"
+            app:destination="@id/fragment_edit_user_detail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_edit_user_detail"
+        android:name="com.arpansircar.notes_app.presentation.fragment.EditUserDetailFragment"
+        tools:layout="@layout/fragment_edit_user_detail" />
 
 </navigation>

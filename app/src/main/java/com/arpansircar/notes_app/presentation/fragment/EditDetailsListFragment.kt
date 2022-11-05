@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentEditDetailsListBinding
 import com.arpansircar.notes_app.di.ApplicationContainer
@@ -31,6 +33,13 @@ class EditDetailsListFragment : Fragment() {
     ): View? {
         binding = FragmentEditDetailsListBinding.inflate(inflater)
         return binding?.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding?.rlEditDisplayName?.setOnClickListener {
+            findNavController().navigate(R.id.action_edit_details_list_to_edit_user_detail)
+        }
     }
 
     override fun onDestroyView() {

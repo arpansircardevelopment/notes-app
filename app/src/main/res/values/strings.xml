@@ -20,6 +20,7 @@
     <string name="logged_in">Logged In</string>
     <string name="log_out">Log Out</string>
     <string name="update_details">Update Details</string>
+    <string name="update_custom_details">Update %1$s</string>
     <string name="enter_your_name">Enter your name</string>
     <string name="enter_your_phone_number">Phone Number</string>
     <string name="name">Display Name</string>
@@ -46,5 +47,6 @@
     <string name="edit_display_name">Edit Display Name</string>
     <string name="edit_email_address">Edit Email Address</string>
     <string name="edit_password">Edit Password</string>
+    <string name="enter_new_detail_message">Enter your new %1$s here</string>
 
 </resources>

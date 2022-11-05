@@ -23,16 +23,12 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         authContainer = AuthContainer()
 
-        if (authContainer?.firebaseContainer?.currentUser != null) {
-            if (authContainer?.firebaseContainer?.currentUser?.displayName == null || authContainer?.firebaseContainer?.currentUser?.displayName?.isEmpty() == true) {
-                findNavController().navigate(R.id.fragment_user_details)
-            } else {
-                findNavController().navigate(R.id.fragment_home)
+        initializeNavigation()
 
-            }
-        }
+        initializeBackPressedDispatcher()
 
         viewModel = ViewModelProvider(
             this, authContainer?.loginViewModelFactory!!
@@ -100,4 +96,23 @@ class LoginFragment : Fragment() {
         super.onDestroy()
         authContainer = null
     }
+
+    private fun initializeNavigation() {
+        if (authContainer?.firebaseContainer?.currentUser != null) {
+            if (authContainer?.firebaseContainer?.currentUser?.displayName == null || authContainer?.firebaseContainer?.currentUser?.displayName?.isEmpty() == true) {
+                findNavController().navigate(R.id.fragment_user_details)
+            } else {
+                findNavController().navigate(R.id.fragment_home)
+
+            }
+        }
+    }
+
+    private fun initializeBackPressedDispatcher() =
+        requireActivity().onBackPressedDispatcher.addCallback(this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
 }

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_alternates_bold"
-            android:padding="10dp"
+            android:padding="15sp"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold" />

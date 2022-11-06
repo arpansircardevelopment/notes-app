@@ -36,4 +36,10 @@ object ConstantsBase {
     const val FIREBASE_NOTE_DETAIL = "noteDetail"
     const val FIREBASE_NOTE_CREATED_AT = "noteCreatedAt"
 
+    // edit details constants
+    const val EDIT_TYPE = "edit_type"
+    const val EDIT_PASSWORD = "password"
+    const val EDIT_DISPLAY_NAME = "display name"
+    const val EDIT_EMAIL_ADDRESS = "email address"
+
 }

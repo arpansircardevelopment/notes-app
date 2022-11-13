@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="100dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="25dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_user_detail"
@@ -42,12 +43,23 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/cpi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_update_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/montserrat_alternates"
             android:textAllCaps="true"
             android:textStyle="bold"

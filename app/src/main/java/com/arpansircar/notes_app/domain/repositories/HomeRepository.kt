@@ -3,17 +3,21 @@ package com.arpansircar.notes_app.domain.repositories
 import com.arpansircar.notes_app.common.utils.FirebaseUtils
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
+import com.arpansircar.notes_app.data.network.AuthInvoker
 import com.arpansircar.notes_app.di.FirebaseContainer
 import com.arpansircar.notes_app.domain.models.Note
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 
 class HomeRepository(
     private val notesDao: NotesDao,
     private val container: FirebaseContainer,
-    private val datastoreContainer: NotesDatastoreContainer
+    private val datastoreContainer: NotesDatastoreContainer,
+    private val authInvoker: AuthInvoker,
+    private val firebaseAuth: FirebaseAuth
 ) {
     fun fetchNotes(): Flow<List<Note>> {
         return notesDao.loadAllNotes()
@@ -69,4 +73,10 @@ class HomeRepository(
     private fun getFirebaseAuth(): FirebaseAuth = container.firebaseAuth
 
     fun userSignOut(): Unit = getFirebaseAuth().signOut()
+
+    suspend fun updateUserProfile(request: UserProfileChangeRequest): String? {
+        return authInvoker.invoke {
+            firebaseAuth.currentUser?.updateProfile(request)?.await()
+        }
+    }
 }

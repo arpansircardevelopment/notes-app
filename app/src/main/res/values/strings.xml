@@ -50,4 +50,7 @@
     <string name="enter_new_detail_message">Enter your new %1$s here</string>
     <string name="invalid_details">Invalid Details</string>
 
+    <string name="invalid_email">Email entered is invalid</string>
+    <string name="invalid_password">Password entered is invalid</string>
+
 </resources>

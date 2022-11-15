@@ -15,35 +15,30 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
     private val _responseObserver: MutableLiveData<String?> = MutableLiveData()
     val responseObserver: LiveData<String?> = _responseObserver
 
-    fun validateData(
-        emailEditText: TextInputEditText?,
-        passwordEditText: TextInputEditText?
-    ): Boolean {
-        if (emailEditText?.text?.isEmpty() == true) {
-            emailEditText.error = "Field cannot be empty"
+    fun userLogin(emailEditText: TextInputEditText?, passwordEditText: TextInputEditText?) {
+        var response: String?
+        viewModelScope.launch(Dispatchers.IO) {
+            response = authRepository.userLogin(
+                emailEditText?.text?.toString() ?: "", passwordEditText?.text?.toString() ?: ""
+            )
+            _responseObserver.postValue(response)
+        }
+    }
+
+    fun isEmailValid(email: String?): Boolean {
+        if (email.isNullOrEmpty() || email.isBlank()) {
             return false
         }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(emailEditText?.text.toString()).matches()) {
-            emailEditText?.error = "Not a valid email address"
-            return false
-        }
-
-        if (passwordEditText?.text?.isEmpty() == true) {
-            passwordEditText.error = "Field cannot be empty"
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return false
         }
         return true
     }
 
-    fun userLogin(emailEditText: TextInputEditText?, passwordEditText: TextInputEditText?) {
-        var response: String?
-        viewModelScope.launch(Dispatchers.IO) {
-            response = authRepository.userLogin(
-                emailEditText?.text?.toString() ?: "",
-                passwordEditText?.text?.toString() ?: ""
-            )
-            _responseObserver.postValue(response)
+    fun isPasswordValid(password: String?): Boolean {
+        if (password.isNullOrEmpty() || password.isBlank()) {
+            return false
         }
+        return true
     }
 }

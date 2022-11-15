@@ -1,6 +1,8 @@
 package com.arpansircar.notes_app.presentation.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.databinding.FragmentLoginBinding
 import com.arpansircar.notes_app.di.AuthContainer
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
+import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
@@ -48,13 +51,14 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_login_to_signup)
         }
 
+        setTextFieldListener()
+
         viewModel.responseObserver.observe(viewLifecycleOwner) {
-            binding?.cpi?.visibility = View.GONE
+            showUIElements(false)
 
             if (it == null) {
-                Toast.makeText(
-                    requireContext(), getString(R.string.logged_in), Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), getString(R.string.logged_in), Toast.LENGTH_SHORT)
+                    .show()
 
                 if (authContainer?.firebaseContainer?.firebaseAuth?.currentUser?.displayName == null) {
                     findNavController().navigate(R.id.action_login_to_user_details)
@@ -63,26 +67,25 @@ class LoginFragment : Fragment() {
                 }
                 return@observe
             }
+
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            binding?.btLogin?.isEnabled = true
-            binding?.signUpPrompt?.isEnabled = true
+            showUIElements(true)
         }
     }
 
     override fun onResume() {
         super.onResume()
+
         binding?.btLogin?.setOnClickListener {
-            it.isEnabled = false
-            binding?.signUpPrompt?.isEnabled = false
+            showUIElements(false)
+            shouldShowProgressUI(true)
+            clearTextFieldFocus()
 
-            binding?.cpi?.visibility = View.VISIBLE
-            binding?.tilEmail?.clearFocus()
-            binding?.tilPassword?.clearFocus()
-
-            if (viewModel.validateData(binding?.etEmail, binding?.etPassword)) {
+            if (isDataValid()) {
                 viewModel.userLogin(binding?.etEmail, binding?.etPassword)
             } else {
-                binding?.cpi?.visibility = View.GONE
+                showUIElements(true)
+                shouldShowProgressUI(false)
             }
         }
     }
@@ -103,7 +106,6 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(R.id.fragment_user_details)
             } else {
                 findNavController().navigate(R.id.fragment_home)
-
             }
         }
     }
@@ -115,4 +117,67 @@ class LoginFragment : Fragment() {
                     requireActivity().finish()
                 }
             })
+
+    private fun setTextFieldListener() {
+        binding?.etEmail?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                binding?.tilEmail?.apply {
+                    removeErrorFromTextInputLayout(binding?.tilEmail)
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+
+        binding?.etPassword?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                removeErrorFromTextInputLayout(binding?.tilPassword)
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+    }
+
+    private fun showUIElements(isEnabled: Boolean) {
+        binding?.btLogin?.isEnabled = isEnabled
+        binding?.signUpPrompt?.isEnabled = isEnabled
+    }
+
+    private fun shouldShowProgressUI(isVisible: Boolean) {
+        binding?.cpi?.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
+
+    private fun clearTextFieldFocus() {
+        binding?.tilEmail?.clearFocus()
+        binding?.tilPassword?.clearFocus()
+    }
+
+    private fun isDataValid(): Boolean {
+        val email: String? = binding?.etEmail?.text?.toString()
+        val password: String? = binding?.etPassword?.text?.toString()
+        var isValid = true
+
+        if (!viewModel.isEmailValid(email)) {
+            binding?.tilEmail?.error = getString(R.string.invalid_email)
+            isValid = false
+        }
+
+        if (!viewModel.isPasswordValid(password)) {
+            binding?.tilPassword?.error = getString(R.string.invalid_password)
+            isValid = false
+        }
+
+        return isValid
+    }
+
+    private fun removeErrorFromTextInputLayout(layout: TextInputLayout?) {
+        layout?.apply {
+            error = null
+            isErrorEnabled = false
+        }
+    }
 }

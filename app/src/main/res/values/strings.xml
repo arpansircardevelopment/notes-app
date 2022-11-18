@@ -52,5 +52,6 @@
 
     <string name="invalid_email">Email entered is invalid</string>
     <string name="invalid_password">Password entered is invalid</string>
+    <string name="invalid_confirm_password">Confirm password entered is invalid</string>
 
 </resources>

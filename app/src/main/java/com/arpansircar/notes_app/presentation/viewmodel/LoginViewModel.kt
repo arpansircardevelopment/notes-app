@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arpansircar.notes_app.domain.repositories.AuthRepository
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -15,12 +14,10 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
     private val _responseObserver: MutableLiveData<String?> = MutableLiveData()
     val responseObserver: LiveData<String?> = _responseObserver
 
-    fun userLogin(emailEditText: TextInputEditText?, passwordEditText: TextInputEditText?) {
+    fun userLogin(email: String, password: String) {
         var response: String?
         viewModelScope.launch(Dispatchers.IO) {
-            response = authRepository.userLogin(
-                emailEditText?.text?.toString() ?: "", passwordEditText?.text?.toString() ?: ""
-            )
+            response = authRepository.userLogin(email, password)
             _responseObserver.postValue(response)
         }
     }

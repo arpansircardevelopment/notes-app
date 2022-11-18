@@ -24,6 +24,9 @@ class LoginFragment : Fragment() {
     private var binding: FragmentLoginBinding? = null
     private lateinit var viewModel: LoginViewModel
 
+    private var email: String? = null
+    private var password: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,7 +57,8 @@ class LoginFragment : Fragment() {
         setTextFieldListener()
 
         viewModel.responseObserver.observe(viewLifecycleOwner) {
-            showUIElements(false)
+            shouldShowProgressUI(false)
+            showUIElements(true)
 
             if (it == null) {
                 Toast.makeText(requireContext(), getString(R.string.logged_in), Toast.LENGTH_SHORT)
@@ -69,7 +73,6 @@ class LoginFragment : Fragment() {
             }
 
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            showUIElements(true)
         }
     }
 
@@ -82,7 +85,7 @@ class LoginFragment : Fragment() {
             clearTextFieldFocus()
 
             if (isDataValid()) {
-                viewModel.userLogin(binding?.etEmail, binding?.etPassword)
+                viewModel.userLogin(email!!, password!!)
             } else {
                 showUIElements(true)
                 shouldShowProgressUI(false)
@@ -157,8 +160,9 @@ class LoginFragment : Fragment() {
     }
 
     private fun isDataValid(): Boolean {
-        val email: String? = binding?.etEmail?.text?.toString()
-        val password: String? = binding?.etPassword?.text?.toString()
+        email = binding?.etEmail?.text?.toString()
+        password = binding?.etPassword?.text?.toString()
+
         var isValid = true
 
         if (!viewModel.isEmailValid(email)) {

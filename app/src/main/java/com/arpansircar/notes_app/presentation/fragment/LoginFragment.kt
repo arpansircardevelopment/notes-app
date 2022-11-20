@@ -14,8 +14,11 @@ import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.databinding.FragmentLoginBinding
 import com.arpansircar.notes_app.di.AuthContainer
+import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldFocus
+import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
+import com.arpansircar.notes_app.presentation.utils.DisplayUtils.removeErrorMessage
+import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
-import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
@@ -81,7 +84,9 @@ class LoginFragment : Fragment() {
 
         binding?.btLogin?.setOnClickListener {
             showUIElements(false)
+
             shouldShowProgressUI(true)
+
             clearTextFieldFocus()
 
             if (isDataValid()) {
@@ -114,7 +119,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun initializeBackPressedDispatcher() =
-        requireActivity().onBackPressedDispatcher.addCallback(this,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     requireActivity().finish()
@@ -126,9 +132,7 @@ class LoginFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding?.tilEmail?.apply {
-                    removeErrorFromTextInputLayout(binding?.tilEmail)
-                }
+                binding?.tilEmail?.removeErrorMessage()
             }
 
             override fun afterTextChanged(p0: Editable?) {}
@@ -138,7 +142,7 @@ class LoginFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                removeErrorFromTextInputLayout(binding?.tilPassword)
+                binding?.tilPassword?.removeErrorMessage()
             }
 
             override fun afterTextChanged(p0: Editable?) {}
@@ -146,17 +150,15 @@ class LoginFragment : Fragment() {
     }
 
     private fun showUIElements(isEnabled: Boolean) {
-        binding?.btLogin?.isEnabled = isEnabled
-        binding?.signUpPrompt?.isEnabled = isEnabled
+        enableViewElements(listOf(binding?.btLogin, binding?.signUpPrompt), isEnabled)
     }
 
     private fun shouldShowProgressUI(isVisible: Boolean) {
-        binding?.cpi?.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding?.cpi?.shouldShowProgressUI(isVisible)
     }
 
     private fun clearTextFieldFocus() {
-        binding?.tilEmail?.clearFocus()
-        binding?.tilPassword?.clearFocus()
+        clearTextFieldFocus(listOf(binding?.tilEmail, binding?.tilPassword))
     }
 
     private fun isDataValid(): Boolean {
@@ -176,12 +178,5 @@ class LoginFragment : Fragment() {
         }
 
         return isValid
-    }
-
-    private fun removeErrorFromTextInputLayout(layout: TextInputLayout?) {
-        layout?.apply {
-            error = null
-            isErrorEnabled = false
-        }
     }
 }

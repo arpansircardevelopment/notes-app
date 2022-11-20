@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arpansircar.notes_app.domain.repositories.AuthRepository
+import com.arpansircar.notes_app.presentation.utils.ValidatorUtils.isEmailValid
+import com.arpansircar.notes_app.presentation.utils.ValidatorUtils.isPasswordValid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -22,20 +24,7 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
         }
     }
 
-    fun isEmailValid(email: String?): Boolean {
-        if (email.isNullOrEmpty() || email.isBlank()) {
-            return false
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return false
-        }
-        return true
-    }
+    fun isEmailValid(email: String?): Boolean = email.isEmailValid()
 
-    fun isPasswordValid(password: String?): Boolean {
-        if (password.isNullOrEmpty() || password.isBlank()) {
-            return false
-        }
-        return true
-    }
+    fun isPasswordValid(password: String?): Boolean = password.isPasswordValid()
 }

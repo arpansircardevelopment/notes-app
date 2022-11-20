@@ -18,6 +18,7 @@ import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldF
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.removeErrorMessage
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
+import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
 
 class LoginFragment : Fragment() {
@@ -26,6 +27,7 @@ class LoginFragment : Fragment() {
 
     private var binding: FragmentLoginBinding? = null
     private lateinit var viewModel: LoginViewModel
+    private val watcherHashSet = HashSet<TextWatcher>()
 
     private var email: String? = null
     private var password: String? = null
@@ -57,8 +59,6 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_login_to_signup)
         }
 
-        setTextFieldListener()
-
         viewModel.responseObserver.observe(viewLifecycleOwner) {
             shouldShowProgressUI(false)
             showUIElements(true)
@@ -79,6 +79,11 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerListeners()
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -96,6 +101,11 @@ class LoginFragment : Fragment() {
                 shouldShowProgressUI(false)
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterListener()
     }
 
     override fun onDestroyView() {
@@ -127,28 +137,6 @@ class LoginFragment : Fragment() {
                 }
             })
 
-    private fun setTextFieldListener() {
-        binding?.etEmail?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding?.tilEmail?.removeErrorMessage()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-
-        binding?.etPassword?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding?.tilPassword?.removeErrorMessage()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-    }
-
     private fun showUIElements(isEnabled: Boolean) {
         enableViewElements(listOf(binding?.btLogin, binding?.signUpPrompt), isEnabled)
     }
@@ -178,5 +166,20 @@ class LoginFragment : Fragment() {
         }
 
         return isValid
+    }
+
+    private fun registerListeners() {
+        binding?.etEmail?.addTextChangedListener(getWatcher(binding?.tilEmail, watcherHashSet))
+        binding?.etPassword?.addTextChangedListener(
+            getWatcher(binding?.tilPassword, watcherHashSet)
+        )
+    }
+
+    private fun unregisterListener() {
+        watcherHashSet.forEach {
+            binding?.etEmail?.removeTextChangedListener(it)
+            binding?.etPassword?.removeTextChangedListener(it)
+        }
+        watcherHashSet.clear()
     }
 }

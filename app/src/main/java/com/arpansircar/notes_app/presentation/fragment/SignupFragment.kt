@@ -17,6 +17,8 @@ import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldF
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.removeErrorMessage
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
+import com.arpansircar.notes_app.presentation.utils.ListenerUtils
+import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.viewmodel.SignupViewModel
 
 class SignupFragment : Fragment() {
@@ -25,6 +27,7 @@ class SignupFragment : Fragment() {
 
     private var binding: FragmentSignupBinding? = null
     private lateinit var viewModel: SignupViewModel
+    private val watcherHashSet = HashSet<TextWatcher>()
 
     private var email: String? = null
     private var password: String? = null
@@ -50,8 +53,6 @@ class SignupFragment : Fragment() {
             findNavController().navigate(R.id.action_signup_to_login)
         }
 
-        setTextFieldListener()
-
         viewModel.responseObserver.observe(viewLifecycleOwner) {
             shouldShowProgressUI(false)
             showUIElements(true)
@@ -66,6 +67,11 @@ class SignupFragment : Fragment() {
             }
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registerListeners()
     }
 
     override fun onResume() {
@@ -84,6 +90,11 @@ class SignupFragment : Fragment() {
                 shouldShowProgressUI(false)
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterListeners()
     }
 
     override fun onDestroyView() {
@@ -137,35 +148,22 @@ class SignupFragment : Fragment() {
         )
     }
 
-    private fun setTextFieldListener() {
-        binding?.etEmail?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+    private fun registerListeners() {
+        binding?.etEmail?.addTextChangedListener(getWatcher(binding?.tilEmail, watcherHashSet))
+        binding?.etPassword?.addTextChangedListener(
+            getWatcher(binding?.tilPassword, watcherHashSet)
+        )
+        binding?.etConfirmPassword?.addTextChangedListener(
+            getWatcher(binding?.tilConfirmPassword, watcherHashSet)
+        )
+    }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding?.tilEmail?.removeErrorMessage()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-
-        binding?.etPassword?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding?.tilPassword?.removeErrorMessage()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-
-        binding?.etConfirmPassword?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding?.tilConfirmPassword?.removeErrorMessage()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
+    private fun unregisterListeners() {
+        watcherHashSet.forEach {
+            binding?.etEmail?.removeTextChangedListener(it)
+            binding?.etPassword?.removeTextChangedListener(it)
+            binding?.etConfirmPassword?.removeTextChangedListener(it)
+        }
+        watcherHashSet.clear()
     }
 }

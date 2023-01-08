@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
+import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentSignupBinding
 import com.arpansircar.notes_app.di.AuthContainer
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldFocus
@@ -34,7 +35,9 @@ class SignupFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authContainer = AuthContainer()
+        val authInvoker =
+            (activity?.applicationContext as NotesApplication).appContainer.authInvoker
+        authContainer = AuthContainer(authInvoker)
         viewModel = ViewModelProvider(
             this, authContainer?.signupViewModelFactory!!
         )[SignupViewModel::class.java]

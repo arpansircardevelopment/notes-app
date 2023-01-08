@@ -6,14 +6,17 @@ import com.arpansircar.notes_app.presentation.viewmodel.factory.LoginViewModelFa
 import com.arpansircar.notes_app.presentation.viewmodel.factory.SignupViewModelFactory
 import com.arpansircar.notes_app.presentation.viewmodel.factory.UserViewModelFactory
 
-class AuthContainer {
+class AuthContainer(authInvoker: AuthInvoker) {
 
-    val firebaseContainer = FirebaseContainer()
+    private val firebaseContainer = FirebaseContainer()
 
-    private val authInvoker: AuthInvoker = AuthInvoker()
+    val firebaseAuth = firebaseContainer.firebaseAuth
+
+    val currentUser = firebaseContainer.currentUser
 
     private val authRepository: AuthRepository = AuthRepository(
-        firebaseContainer.firebaseAuth, authInvoker
+        firebaseAuth,
+        authInvoker
     )
 
     val loginViewModelFactory: LoginViewModelFactory = LoginViewModelFactory(authRepository)

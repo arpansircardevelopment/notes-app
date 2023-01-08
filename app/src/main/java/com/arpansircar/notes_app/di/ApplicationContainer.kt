@@ -4,6 +4,7 @@ import android.app.Application
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
 import com.arpansircar.notes_app.data.local.db.NotesDatabase
+import com.arpansircar.notes_app.data.network.AuthInvoker
 
 class ApplicationContainer(application: Application) {
 
@@ -12,5 +13,7 @@ class ApplicationContainer(application: Application) {
     val notesDao: NotesDao = notesDatabase.notesDao()
 
     val datastoreContainer: NotesDatastoreContainer = NotesDatastoreContainer(application)
+
+    val authInvoker: AuthInvoker = AuthInvoker()
 
 }

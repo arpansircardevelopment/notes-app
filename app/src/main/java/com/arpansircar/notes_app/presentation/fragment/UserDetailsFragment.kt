@@ -8,25 +8,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
-import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentUserDetailsBinding
-import com.arpansircar.notes_app.di.ApplicationContainer
-import com.arpansircar.notes_app.di.AuthContainer
+import com.arpansircar.notes_app.di.AuthContainerRoot
+import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.viewmodel.UserDetailsViewModel
 
-class UserDetailsFragment : Fragment() {
-
-    private var authContainer: AuthContainer? = null
+class UserDetailsFragment : BaseFragment() {
 
     private var binding: FragmentUserDetailsBinding? = null
     private lateinit var viewModel: UserDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authContainer = AuthContainer()
         viewModel = ViewModelProvider(
             this,
-            authContainer?.userViewModelFactory!!
+            authContainerRoot.userViewModelFactory
         )[UserDetailsViewModel::class.java]
     }
 
@@ -67,10 +63,5 @@ class UserDetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        authContainer = null
     }
 }

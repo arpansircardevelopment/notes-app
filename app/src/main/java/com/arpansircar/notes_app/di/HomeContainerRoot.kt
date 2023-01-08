@@ -9,21 +9,21 @@ import com.arpansircar.notes_app.presentation.viewmodel.factory.AddEditNoteViewM
 import com.arpansircar.notes_app.presentation.viewmodel.factory.EditUserDetailViewModelFactory
 import com.arpansircar.notes_app.presentation.viewmodel.factory.HomeViewModelFactory
 
-class HomeContainer(
+class HomeContainerRoot(
     notesDao: NotesDao, datastoreContainer: NotesDatastoreContainer
 ) {
 
-    val firebaseContainer = FirebaseContainer()
+    val firebaseContainerRoot = FirebaseContainerRoot()
 
     private val authInvoker = AuthInvoker()
 
     private val homeRepository: HomeRepository =
         HomeRepository(
             notesDao,
-            firebaseContainer,
+            firebaseContainerRoot,
             datastoreContainer,
             authInvoker,
-            firebaseContainer.firebaseAuth
+            firebaseContainerRoot.firebaseAuth
         )
 
     val homeViewModelFactory: HomeViewModelFactory = HomeViewModelFactory(homeRepository)

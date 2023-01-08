@@ -12,15 +12,14 @@ import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentEditUserDetailBinding
-import com.arpansircar.notes_app.di.ApplicationContainer
-import com.arpansircar.notes_app.di.AuthContainer
-import com.arpansircar.notes_app.di.HomeContainer
+import com.arpansircar.notes_app.di.ApplicationContainerRoot
+import com.arpansircar.notes_app.di.HomeContainerRoot
 import com.arpansircar.notes_app.presentation.viewmodel.EditUserDetailViewModel
 
 class EditUserDetailFragment : Fragment() {
 
-    private var appContainer: ApplicationContainer? = null
-    private var homeContainer: HomeContainer? = null
+    private var appContainer: ApplicationContainerRoot? = null
+    private var homeContainerRoot: HomeContainerRoot? = null
 
     private var detailType: String? = null
     private var binding: FragmentEditUserDetailBinding? = null
@@ -29,10 +28,10 @@ class EditUserDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainer = HomeContainer(appContainer?.notesDao!!, appContainer?.datastoreContainer!!)
+        homeContainerRoot = HomeContainerRoot(appContainer?.notesDao!!, appContainer?.datastoreContainer!!)
 
         viewModel = ViewModelProvider(
-            this, homeContainer?.editUserDetailViewModelFactory!!
+            this, homeContainerRoot?.editUserDetailViewModelFactory!!
         )[EditUserDetailViewModel::class.java]
 
         detailType = arguments?.getString(ConstantsBase.EDIT_TYPE)

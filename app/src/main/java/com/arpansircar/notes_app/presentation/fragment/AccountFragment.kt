@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentAccountBinding
-import com.arpansircar.notes_app.di.ApplicationContainer
-import com.arpansircar.notes_app.di.HomeContainer
+import com.arpansircar.notes_app.di.ApplicationContainerRoot
+import com.arpansircar.notes_app.di.HomeContainerRoot
 import com.arpansircar.notes_app.presentation.viewmodel.AccountViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
@@ -20,8 +20,8 @@ import com.google.firebase.auth.FirebaseUser
 
 class AccountFragment : Fragment() {
 
-    private var appContainer: ApplicationContainer? = null
-    private var homeContainer: HomeContainer? = null
+    private var appContainer: ApplicationContainerRoot? = null
+    private var homeContainerRoot: HomeContainerRoot? = null
 
     private var binding: FragmentAccountBinding? = null
     private lateinit var viewModel: AccountViewModel
@@ -31,7 +31,7 @@ class AccountFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainer = HomeContainer(
+        homeContainerRoot = HomeContainerRoot(
             appContainer?.notesDao!!, appContainer?.datastoreContainer!!
         )
 
@@ -43,10 +43,10 @@ class AccountFragment : Fragment() {
             })
 
         viewModel = ViewModelProvider(
-            this, homeContainer?.accountViewModelFactory!!
+            this, homeContainerRoot?.accountViewModelFactory!!
         )[AccountViewModel::class.java]
 
-        firebaseAuth = homeContainer?.firebaseContainer?.firebaseAuth
+        firebaseAuth = homeContainerRoot?.firebaseContainerRoot?.firebaseAuth
         authStateListener = AuthStateListener { auth ->
             auth.currentUser?.let { it ->
                 setData(it)
@@ -87,7 +87,7 @@ class AccountFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         firebaseAuth = null
-        homeContainer = null
+        homeContainerRoot = null
         appContainer = null
     }
 

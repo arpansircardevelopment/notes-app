@@ -1,30 +1,23 @@
 package com.arpansircar.notes_app.presentation.fragment
 
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
-import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentLoginBinding
-import com.arpansircar.notes_app.di.AuthContainer
+import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldFocus
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
-import com.arpansircar.notes_app.presentation.utils.DisplayUtils.removeErrorMessage
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
 import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
 
-class LoginFragment : Fragment() {
-
-    private var authContainer: AuthContainer? = null
+class LoginFragment : BaseFragment() {
 
     private var binding: FragmentLoginBinding? = null
     private lateinit var viewModel: LoginViewModel
@@ -35,17 +28,13 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val authInvoker =
-            (activity?.applicationContext as NotesApplication).appContainer.authInvoker
-
-        authContainer = AuthContainer(authInvoker)
 
         initializeNavigation()
 
         initializeBackPressedDispatcher()
 
         viewModel = ViewModelProvider(
-            this, authContainer?.loginViewModelFactory!!
+            this, authContainerRoot.loginViewModelFactory
         )[LoginViewModel::class.java]
     }
 
@@ -59,7 +48,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.signUpPrompt?.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_signup)
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_signup)
         }
 
         viewModel.responseObserver.observe(viewLifecycleOwner) {
@@ -70,10 +59,10 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), getString(R.string.logged_in), Toast.LENGTH_SHORT)
                     .show()
 
-                if (authContainer?.firebaseAuth?.currentUser?.displayName == null) {
-                    findNavController().navigate(R.id.action_login_to_user_details)
+                if (authContainerRoot.userDisplayName == null) {
+                    authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_user_details)
                 } else {
-                    findNavController().navigate(R.id.action_login_to_home)
+                    authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_home)
                 }
                 return@observe
             }
@@ -116,18 +105,13 @@ class LoginFragment : Fragment() {
         binding = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        authContainer = null
-    }
-
     private fun initializeNavigation() {
-        if (authContainer?.currentUser != null) {
-            if (authContainer?.currentUser?.displayName == null || authContainer?.currentUser?.displayName?.isEmpty() == true) {
-                findNavController().navigate(R.id.fragment_user_details)
-            } else {
-                findNavController().navigate(R.id.fragment_home)
-            }
+        if (authContainerRoot.currentUser == null) return
+
+        if (authContainerRoot.currentUser != null && authContainerRoot.userDisplayName.isNullOrEmpty()) {
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.fragment_user_details)
+        } else {
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.fragment_home)
         }
     }
 
@@ -136,7 +120,7 @@ class LoginFragment : Fragment() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().finish()
+                    authContainerRoot.screensNavigator.triggerActivityFinish()
                 }
             })
 

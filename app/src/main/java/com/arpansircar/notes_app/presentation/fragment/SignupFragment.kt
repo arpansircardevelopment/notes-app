@@ -1,30 +1,23 @@
 package com.arpansircar.notes_app.presentation.fragment
 
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
-import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentSignupBinding
-import com.arpansircar.notes_app.di.AuthContainer
+import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldFocus
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
-import com.arpansircar.notes_app.presentation.utils.DisplayUtils.removeErrorMessage
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
-import com.arpansircar.notes_app.presentation.utils.ListenerUtils
 import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.viewmodel.SignupViewModel
 
-class SignupFragment : Fragment() {
-
-    private var authContainer: AuthContainer? = null
+class SignupFragment : BaseFragment() {
 
     private var binding: FragmentSignupBinding? = null
     private lateinit var viewModel: SignupViewModel
@@ -35,11 +28,9 @@ class SignupFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val authInvoker =
-            (activity?.applicationContext as NotesApplication).appContainer.authInvoker
-        authContainer = AuthContainer(authInvoker)
         viewModel = ViewModelProvider(
-            this, authContainer?.signupViewModelFactory!!
+            this,
+            authContainerRoot.signupViewModelFactory
         )[SignupViewModel::class.java]
     }
 
@@ -103,11 +94,6 @@ class SignupFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        authContainer = null
     }
 
     private fun isDataValid(): Boolean {

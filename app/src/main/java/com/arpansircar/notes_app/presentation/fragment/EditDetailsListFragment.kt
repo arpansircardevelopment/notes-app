@@ -11,19 +11,19 @@ import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentEditDetailsListBinding
-import com.arpansircar.notes_app.di.ApplicationContainer
-import com.arpansircar.notes_app.di.HomeContainer
+import com.arpansircar.notes_app.di.ApplicationContainerRoot
+import com.arpansircar.notes_app.di.HomeContainerRoot
 
 class EditDetailsListFragment : Fragment() {
-    private var appContainer: ApplicationContainer? = null
-    private var homeContainer: HomeContainer? = null
+    private var appContainer: ApplicationContainerRoot? = null
+    private var homeContainerRoot: HomeContainerRoot? = null
 
     private var binding: FragmentEditDetailsListBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainer = HomeContainer(
+        homeContainerRoot = HomeContainerRoot(
             appContainer?.notesDao!!, appContainer?.datastoreContainer!!
         )
     }
@@ -62,7 +62,7 @@ class EditDetailsListFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        homeContainer = null
+        homeContainerRoot = null
         appContainer = null
     }
 

@@ -22,8 +22,8 @@ import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_ADD
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_EDIT
 import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentHomeBinding
-import com.arpansircar.notes_app.di.ApplicationContainer
-import com.arpansircar.notes_app.di.HomeContainer
+import com.arpansircar.notes_app.di.ApplicationContainerRoot
+import com.arpansircar.notes_app.di.HomeContainerRoot
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
 import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
@@ -32,8 +32,8 @@ import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback {
 
-    private var appContainer: ApplicationContainer? = null
-    private var homeContainer: HomeContainer? = null
+    private var appContainer: ApplicationContainerRoot? = null
+    private var homeContainerRoot: HomeContainerRoot? = null
 
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
@@ -44,11 +44,11 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainer = HomeContainer(appContainer?.notesDao!!, appContainer?.datastoreContainer!!)
+        homeContainerRoot = HomeContainerRoot(appContainer?.notesDao!!, appContainer?.datastoreContainer!!)
 
         viewModel = ViewModelProvider(
             this,
-            homeContainer?.homeViewModelFactory!!
+            homeContainerRoot?.homeViewModelFactory!!
         )[HomeViewModel::class.java]
 
         dialogManager = DialogManager()
@@ -161,7 +161,7 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
 
     override fun onDestroy() {
         super.onDestroy()
-        homeContainer = null
+        homeContainerRoot = null
         appContainer = null
     }
 

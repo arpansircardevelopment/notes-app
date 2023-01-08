@@ -8,11 +8,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.databinding.ActivityMainBinding
+import com.arpansircar.notes_app.presentation.base.BaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private var binding: ActivityMainBinding? = null
     private var navController: NavController? = null

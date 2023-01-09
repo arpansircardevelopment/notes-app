@@ -9,10 +9,8 @@ import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase.DIALOG_TYPE_DELETE
@@ -20,10 +18,7 @@ import com.arpansircar.notes_app.common.ConstantsBase.NOTE_ID
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_ADD
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_EDIT
-import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentHomeBinding
-import com.arpansircar.notes_app.di.ApplicationContainerRoot
-import com.arpansircar.notes_app.di.HomeContainerRoot
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
 import com.arpansircar.notes_app.presentation.base.BaseFragment
@@ -37,18 +32,15 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
     private lateinit var viewModel: HomeViewModel
     private var adapter: HomeAdapter? = null
 
-    private var dialogManager: DialogManager? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(
-            this, homeContainerRoot.homeViewModelFactory!!
+            this, homeContainerRoot.homeViewModelFactory
         )[HomeViewModel::class.java]
 
-        dialogManager = DialogManager()
-
-        requireActivity().onBackPressedDispatcher.addCallback(this,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     homeContainerRoot.screensNavigator.triggerActivityFinish()
@@ -84,13 +76,13 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
                 layoutManager = LinearLayoutManager(requireContext())
             }
 
-            dialogManager?.hideProgressDialog()
+            homeContainerRoot.dialogManager.hideProgressDialog()
         }
 
         viewModel.syncedLiveData.observe(viewLifecycleOwner) {
-            dialogManager?.hideProgressDialog()
+            homeContainerRoot.dialogManager.hideProgressDialog()
             if (!it) {
-                dialogManager?.showProgressDialog(
+                homeContainerRoot.dialogManager.showProgressDialog(
                     childFragmentManager, getString(R.string.loading_your_notes)
                 )
                 downloadNotesData()
@@ -99,8 +91,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
 
         binding?.btAdd?.setOnClickListener {
             homeContainerRoot.screensNavigator.navigateWithBundle(
-                R.id.action_home_to_add_edit,
-                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
+                R.id.action_home_to_add_edit, bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
             )
         }
     }
@@ -120,15 +111,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
                 }
 
                 R.id.item_delete -> {
-                    DialogManager().also {
-                        it.displayDeleteDialog(
-                            childFragmentManager,
-                            this,
-                            DIALOG_TYPE_DELETE,
-                            note,
-                            position
-                        )
-                    }
+                    homeContainerRoot.dialogManager.displayDeleteDialog(
+                        childFragmentManager, this, DIALOG_TYPE_DELETE, note, position
+                    )
                 }
             }
             return@setOnMenuItemClickListener true
@@ -140,7 +125,6 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-        dialogManager = null
     }
 
     private fun syncData() {

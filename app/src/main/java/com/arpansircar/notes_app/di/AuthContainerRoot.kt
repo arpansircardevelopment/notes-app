@@ -12,7 +12,8 @@ import com.arpansircar.notes_app.presentation.viewmodel.factory.SignupViewModelF
 import com.arpansircar.notes_app.presentation.viewmodel.factory.UserViewModelFactory
 
 class AuthContainerRoot(
-    private val applicationContainerRoot: ApplicationContainerRoot, private val fragment: Fragment
+    private val applicationContainerRoot: ApplicationContainerRoot,
+    private val fragment: Fragment
 ) {
 
     val screensNavigator: ScreensNavigator by lazy { ScreensNavigator(fragment) }
@@ -27,22 +28,19 @@ class AuthContainerRoot(
 
     val userDisplayName get() = currentUser?.displayName
 
-    private val authRepository: AuthRepository get() = AuthRepository(firebaseAuth, authInvoker)
+    private val authRepository: AuthRepository by lazy { AuthRepository(firebaseAuth, authInvoker) }
 
     private val loginViewModelFactory: LoginViewModelFactory by lazy {
         LoginViewModelFactory(authRepository)
     }
 
-    val loginViewModel: LoginViewModel
-        get() = ViewModelProvider(fragment, loginViewModelFactory)[LoginViewModel::class.java]
-
     private val signupViewModelFactory: SignupViewModelFactory by lazy {
         SignupViewModelFactory(authRepository)
     }
 
+    val loginViewModel: LoginViewModel
+        get() = ViewModelProvider(fragment, loginViewModelFactory)[LoginViewModel::class.java]
+
     val signupViewModel: SignupViewModel
         get() = ViewModelProvider(fragment, signupViewModelFactory)[SignupViewModel::class.java]
-
-    val userViewModelFactory: UserViewModelFactory by lazy { UserViewModelFactory(authRepository) }
-
 }

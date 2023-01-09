@@ -14,12 +14,10 @@ import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentEditUserDetailBinding
 import com.arpansircar.notes_app.di.ApplicationContainerRoot
 import com.arpansircar.notes_app.di.HomeContainerRoot
+import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.viewmodel.EditUserDetailViewModel
 
-class EditUserDetailFragment : Fragment() {
-
-    private var appContainer: ApplicationContainerRoot? = null
-    private var homeContainerRoot: HomeContainerRoot? = null
+class EditUserDetailFragment : BaseFragment() {
 
     private var detailType: String? = null
     private var binding: FragmentEditUserDetailBinding? = null
@@ -27,11 +25,9 @@ class EditUserDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainerRoot = HomeContainerRoot(appContainer?.notesDao!!, appContainer?.datastoreContainer!!)
 
         viewModel = ViewModelProvider(
-            this, homeContainerRoot?.editUserDetailViewModelFactory!!
+            this, homeContainerRoot.editUserDetailViewModelFactory
         )[EditUserDetailViewModel::class.java]
 
         detailType = arguments?.getString(ConstantsBase.EDIT_TYPE)

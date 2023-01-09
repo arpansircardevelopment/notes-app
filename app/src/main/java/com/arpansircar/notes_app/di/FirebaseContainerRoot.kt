@@ -6,9 +6,11 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class FirebaseContainerRoot {
-    private val firebase: Firebase = Firebase
-    val realtimeDb = firebase.database.reference
+    private val firebase: Firebase get() = Firebase
 
-    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    val currentUser: FirebaseUser? = firebaseAuth.currentUser
+    val realtimeDb get() = firebase.database.reference
+
+    val firebaseAuth: FirebaseAuth get() = FirebaseAuth.getInstance()
+
+    val currentUser: FirebaseUser? get() = firebaseAuth.currentUser
 }

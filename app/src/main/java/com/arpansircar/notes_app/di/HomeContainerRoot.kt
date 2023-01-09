@@ -1,29 +1,39 @@
 package com.arpansircar.notes_app.di
 
+import androidx.fragment.app.Fragment
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
-import com.arpansircar.notes_app.data.network.AuthInvoker
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
+import com.arpansircar.notes_app.presentation.ScreensNavigator
 import com.arpansircar.notes_app.presentation.viewmodel.factory.AccountViewModelFactory
 import com.arpansircar.notes_app.presentation.viewmodel.factory.AddEditNoteViewModelFactory
 import com.arpansircar.notes_app.presentation.viewmodel.factory.EditUserDetailViewModelFactory
 import com.arpansircar.notes_app.presentation.viewmodel.factory.HomeViewModelFactory
 
 class HomeContainerRoot(
-    notesDao: NotesDao, datastoreContainer: NotesDatastoreContainer
+    private val applicationContainerRoot: ApplicationContainerRoot,
+    private val fragment: Fragment
 ) {
 
-    val firebaseContainerRoot = FirebaseContainerRoot()
+    private val notesDao: NotesDao by lazy { applicationContainerRoot.notesDao }
 
-    private val authInvoker = AuthInvoker()
+    private val datastoreContainer: NotesDatastoreContainer by lazy { applicationContainerRoot.datastoreContainer }
 
-    private val homeRepository: HomeRepository =
-        HomeRepository(
+    private val authInvoker get() = applicationContainerRoot.authInvoker
+
+    private val firebaseContainerRoot get() = FirebaseContainerRoot()
+
+    val screensNavigator: ScreensNavigator by lazy { ScreensNavigator(fragment) }
+
+    val firebaseAuth get() = firebaseContainerRoot.firebaseAuth
+
+    private val homeRepository: HomeRepository
+        get() = HomeRepository(
             notesDao,
             firebaseContainerRoot,
             datastoreContainer,
             authInvoker,
-            firebaseContainerRoot.firebaseAuth
+            firebaseAuth
         )
 
     val homeViewModelFactory: HomeViewModelFactory = HomeViewModelFactory(homeRepository)

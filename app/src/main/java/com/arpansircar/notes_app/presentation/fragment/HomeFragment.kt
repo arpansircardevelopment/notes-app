@@ -26,14 +26,12 @@ import com.arpansircar.notes_app.di.ApplicationContainerRoot
 import com.arpansircar.notes_app.di.HomeContainerRoot
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
+import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
 import com.arpansircar.notes_app.presentation.utils.DialogManager
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 
-class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback {
-
-    private var appContainer: ApplicationContainerRoot? = null
-    private var homeContainerRoot: HomeContainerRoot? = null
+class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCallback {
 
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
@@ -43,30 +41,23 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainerRoot = HomeContainerRoot(appContainer?.notesDao!!, appContainer?.datastoreContainer!!)
 
         viewModel = ViewModelProvider(
-            this,
-            homeContainerRoot?.homeViewModelFactory!!
+            this, homeContainerRoot.homeViewModelFactory!!
         )[HomeViewModel::class.java]
 
         dialogManager = DialogManager()
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
+        requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().finish()
+                    homeContainerRoot.screensNavigator.triggerActivityFinish()
                 }
-            }
-        )
+            })
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         syncData()
@@ -100,20 +91,16 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
             dialogManager?.hideProgressDialog()
             if (!it) {
                 dialogManager?.showProgressDialog(
-                    childFragmentManager,
-                    getString(R.string.loading_your_notes)
+                    childFragmentManager, getString(R.string.loading_your_notes)
                 )
                 downloadNotesData()
             }
         }
 
         binding?.btAdd?.setOnClickListener {
-            findNavController().navigate(
+            homeContainerRoot.screensNavigator.navigateWithBundle(
                 R.id.action_home_to_add_edit,
-                bundleOf(
-                    NOTE_TYPE to NOTE_TYPE_ADD,
-                    NOTE_ID to null
-                )
+                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
             )
         }
     }
@@ -126,12 +113,9 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
             when (item.itemId) {
 
                 R.id.item_edit -> {
-                    findNavController().navigate(
+                    homeContainerRoot.screensNavigator.navigateWithBundle(
                         R.id.action_home_to_add_edit,
-                        bundleOf(
-                            NOTE_TYPE to NOTE_TYPE_EDIT,
-                            NOTE_ID to note.id
-                        )
+                        bundleOf(NOTE_TYPE to NOTE_TYPE_EDIT, NOTE_ID to note.id)
                     )
                 }
 
@@ -159,12 +143,6 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
         dialogManager = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        homeContainerRoot = null
-        appContainer = null
-    }
-
     private fun syncData() {
         viewModel.isSynced()
     }
@@ -178,10 +156,7 @@ class HomeFragment : Fragment(), HomeAdapter.NotePressedListener, DialogCallback
     }
 
     override fun onPositiveButtonClicked(
-        dialogType: String,
-        dialogContext: FragmentActivity,
-        note: Note,
-        notePosition: Int
+        dialogType: String, dialogContext: FragmentActivity, note: Note, notePosition: Int
     ) {
         if (dialogType == DIALOG_TYPE_DELETE) {
             viewModel.deleteNote(note)

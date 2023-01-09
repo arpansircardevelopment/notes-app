@@ -17,13 +17,11 @@ import com.arpansircar.notes_app.databinding.FragmentAddEditNoteBinding
 import com.arpansircar.notes_app.di.ApplicationContainerRoot
 import com.arpansircar.notes_app.di.HomeContainerRoot
 import com.arpansircar.notes_app.domain.models.Note
+import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.viewmodel.AddEditNoteViewModel
 import java.util.*
 
-class AddEditNoteFragment : Fragment() {
-
-    private var appContainer: ApplicationContainerRoot? = null
-    private var homeContainerRoot: HomeContainerRoot? = null
+class AddEditNoteFragment : BaseFragment() {
 
     private var binding: FragmentAddEditNoteBinding? = null
     private lateinit var viewModel: AddEditNoteViewModel
@@ -33,15 +31,10 @@ class AddEditNoteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainerRoot = HomeContainerRoot(
-            appContainer?.notesDao!!,
-            appContainer?.datastoreContainer!!
-        )
 
         viewModel = ViewModelProvider(
             this,
-            homeContainerRoot?.addEditNoteViewModelFactory!!
+            homeContainerRoot.addEditNoteViewModelFactory
         )[AddEditNoteViewModel::class.java]
 
         noteType = arguments?.getString(NOTE_TYPE)
@@ -90,12 +83,6 @@ class AddEditNoteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        homeContainerRoot = null
-        appContainer = null
     }
 
     private fun setNoteData() {

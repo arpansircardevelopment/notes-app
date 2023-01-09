@@ -10,7 +10,7 @@ import com.arpansircar.notes_app.presentation.viewmodel.factory.UserViewModelFac
 
 class AuthContainerRoot(
     private val applicationContainerRoot: ApplicationContainerRoot,
-    fragment: Fragment
+    private val fragment: Fragment
 ) {
 
     val screensNavigator: ScreensNavigator by lazy { ScreensNavigator(fragment) }

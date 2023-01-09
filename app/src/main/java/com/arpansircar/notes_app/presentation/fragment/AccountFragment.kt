@@ -13,15 +13,13 @@ import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentAccountBinding
 import com.arpansircar.notes_app.di.ApplicationContainerRoot
 import com.arpansircar.notes_app.di.HomeContainerRoot
+import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.viewmodel.AccountViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseUser
 
-class AccountFragment : Fragment() {
-
-    private var appContainer: ApplicationContainerRoot? = null
-    private var homeContainerRoot: HomeContainerRoot? = null
+class AccountFragment : BaseFragment() {
 
     private var binding: FragmentAccountBinding? = null
     private lateinit var viewModel: AccountViewModel
@@ -30,23 +28,20 @@ class AccountFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appContainer = (requireActivity().application as NotesApplication).appContainer
-        homeContainerRoot = HomeContainerRoot(
-            appContainer?.notesDao!!, appContainer?.datastoreContainer!!
-        )
 
-        requireActivity().onBackPressedDispatcher.addCallback(this,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().finish()
+                    homeContainerRoot.screensNavigator.triggerActivityFinish()
                 }
             })
 
         viewModel = ViewModelProvider(
-            this, homeContainerRoot?.accountViewModelFactory!!
+            this, homeContainerRoot.accountViewModelFactory
         )[AccountViewModel::class.java]
 
-        firebaseAuth = homeContainerRoot?.firebaseContainerRoot?.firebaseAuth
+        firebaseAuth = homeContainerRoot.firebaseAuth
         authStateListener = AuthStateListener { auth ->
             auth.currentUser?.let { it ->
                 setData(it)
@@ -65,12 +60,12 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.rlEditProfile?.setOnClickListener {
-            findNavController().navigate(R.id.action_account_to_edit_details_list)
+            homeContainerRoot.screensNavigator.navigateToScreen(R.id.action_account_to_edit_details_list)
         }
 
         binding?.rlSignOut?.setOnClickListener {
             viewModel.userSignOut()
-            findNavController().navigate(R.id.action_account_to_login)
+            homeContainerRoot.screensNavigator.navigateToScreen(R.id.action_account_to_login)
         }
     }
 
@@ -82,13 +77,6 @@ class AccountFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         firebaseAuth?.removeAuthStateListener { authStateListener }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        firebaseAuth = null
-        homeContainerRoot = null
-        appContainer = null
     }
 
     private fun setData(currentUser: FirebaseUser) {

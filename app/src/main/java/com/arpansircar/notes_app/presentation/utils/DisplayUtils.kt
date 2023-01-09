@@ -1,6 +1,10 @@
 package com.arpansircar.notes_app.presentation.utils
 
+import android.app.Activity
+import android.content.Context
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
 
@@ -25,5 +29,13 @@ object DisplayUtils {
     // Method to enable or disable UI elements present in the list
     fun enableViewElements(viewList: List<View?>, isEnabled: Boolean) {
         viewList.forEach { it?.isEnabled = isEnabled }
+    }
+
+    fun Fragment.showShortToast(string: String) {
+        Toast.makeText(this.requireContext(), string, Toast.LENGTH_SHORT).show()
+    }
+
+    fun Fragment.showLongToast(string: String) {
+        Toast.makeText(this.requireContext(), string, Toast.LENGTH_LONG).show()
     }
 }

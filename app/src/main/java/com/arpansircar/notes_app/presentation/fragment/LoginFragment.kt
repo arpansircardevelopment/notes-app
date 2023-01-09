@@ -14,6 +14,8 @@ import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldFocus
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
+import com.arpansircar.notes_app.presentation.utils.DisplayUtils.showLongToast
+import com.arpansircar.notes_app.presentation.utils.DisplayUtils.showShortToast
 import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
 
@@ -28,14 +30,9 @@ class LoginFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initializeNavigation()
-
         initializeBackPressedDispatcher()
-
-        viewModel = ViewModelProvider(
-            this, authContainerRoot.loginViewModelFactory
-        )[LoginViewModel::class.java]
+        viewModel = authContainerRoot.loginViewModel
     }
 
     override fun onCreateView(
@@ -56,8 +53,7 @@ class LoginFragment : BaseFragment() {
             showUIElements(true)
 
             if (it == null) {
-                Toast.makeText(requireContext(), getString(R.string.logged_in), Toast.LENGTH_SHORT)
-                    .show()
+                showShortToast(getString(R.string.logged_in))
 
                 if (authContainerRoot.userDisplayName == null) {
                     authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_user_details)
@@ -67,7 +63,7 @@ class LoginFragment : BaseFragment() {
                 return@observe
             }
 
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            showShortToast(it)
         }
     }
 
@@ -81,9 +77,7 @@ class LoginFragment : BaseFragment() {
 
         binding?.btLogin?.setOnClickListener {
             showUIElements(false)
-
             shouldShowProgressUI(true)
-
             clearTextFieldFocus()
 
             if (isDataValid()) {

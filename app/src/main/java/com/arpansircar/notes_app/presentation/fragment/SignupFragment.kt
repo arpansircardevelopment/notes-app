@@ -14,6 +14,7 @@ import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldFocus
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
+import com.arpansircar.notes_app.presentation.utils.DisplayUtils.showShortToast
 import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.viewmodel.SignupViewModel
 
@@ -28,10 +29,7 @@ class SignupFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            authContainerRoot.signupViewModelFactory
-        )[SignupViewModel::class.java]
+        viewModel = authContainerRoot.signupViewModel
     }
 
     override fun onCreateView(
@@ -44,7 +42,7 @@ class SignupFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.loginPrompt?.setOnClickListener {
-            findNavController().navigate(R.id.action_signup_to_login)
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.action_signup_to_login)
         }
 
         viewModel.responseObserver.observe(viewLifecycleOwner) {
@@ -52,14 +50,12 @@ class SignupFragment : BaseFragment() {
             showUIElements(true)
 
             if (it == null) {
-                Toast.makeText(
-                    requireContext(), getString(R.string.account_created), Toast.LENGTH_SHORT
-                ).show()
-
-                findNavController().navigate(R.id.action_signup_to_user_details)
+                showShortToast(getString(R.string.account_created))
+                authContainerRoot.screensNavigator.navigateToScreen(R.id.action_signup_to_user_details)
                 return@observe
             }
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+
+            showShortToast(it)
         }
     }
 
@@ -72,9 +68,7 @@ class SignupFragment : BaseFragment() {
         super.onResume()
         binding?.btSignup?.setOnClickListener {
             showUIElements(false)
-
             shouldShowProgressUI(true)
-
             clearTextFieldFocus()
 
             if (isDataValid()) {

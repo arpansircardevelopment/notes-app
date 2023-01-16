@@ -47,8 +47,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        syncData()
-        viewModel.fetchNotes()
+        syncAndFetchNotes()
         return binding?.root
     }
 
@@ -80,7 +79,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
                 homeContainerRoot.dialogManager.showProgressDialog(
                     childFragmentManager, getString(R.string.loading_your_notes)
                 )
-                downloadNotesData()
+                viewModel.downloadNotes()
             }
         }
 
@@ -120,17 +119,14 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
         popupMenu.show()
     }
 
+    private fun syncAndFetchNotes() {
+        viewModel.isSynced()
+        viewModel.fetchNotes()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    private fun syncData() {
-        viewModel.isSynced()
-    }
-
-    private fun downloadNotesData() {
-        viewModel.downloadNotes()
     }
 
     override fun onNotePressed(note: Note, view: View, position: Int) {

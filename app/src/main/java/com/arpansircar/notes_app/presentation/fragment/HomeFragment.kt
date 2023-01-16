@@ -10,7 +10,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase.DIALOG_TYPE_DELETE
@@ -23,7 +22,6 @@ import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
 import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
-import com.arpansircar.notes_app.presentation.utils.DialogManager
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 
 class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCallback {
@@ -35,15 +33,12 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(
-            this, homeContainerRoot.homeViewModelFactory
-        )[HomeViewModel::class.java]
+        viewModel = homeContainerRoot.homeViewModel
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
+        requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    homeContainerRoot.screensNavigator.triggerActivityFinish()
+                    homeContainerRoot.screensNavigator.triggerActivityFinish(this@HomeFragment)
                 }
             })
     }
@@ -91,7 +86,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
 
         binding?.btAdd?.setOnClickListener {
             homeContainerRoot.screensNavigator.navigateWithBundle(
-                R.id.action_home_to_add_edit, bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
+                R.id.action_home_to_add_edit,
+                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null),
+                this
             )
         }
     }
@@ -106,7 +103,8 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
                 R.id.item_edit -> {
                     homeContainerRoot.screensNavigator.navigateWithBundle(
                         R.id.action_home_to_add_edit,
-                        bundleOf(NOTE_TYPE to NOTE_TYPE_EDIT, NOTE_ID to note.id)
+                        bundleOf(NOTE_TYPE to NOTE_TYPE_EDIT, NOTE_ID to note.id),
+                        this
                     )
                 }
 

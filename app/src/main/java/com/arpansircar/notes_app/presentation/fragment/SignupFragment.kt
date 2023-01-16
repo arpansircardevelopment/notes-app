@@ -5,9 +5,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.databinding.FragmentSignupBinding
 import com.arpansircar.notes_app.presentation.base.BaseFragment
@@ -42,7 +39,7 @@ class SignupFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.loginPrompt?.setOnClickListener {
-            authContainerRoot.screensNavigator.navigateToScreen(R.id.action_signup_to_login)
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.action_signup_to_login, this)
         }
 
         viewModel.responseObserver.observe(viewLifecycleOwner) {
@@ -51,7 +48,9 @@ class SignupFragment : BaseFragment() {
 
             if (it == null) {
                 showShortToast(getString(R.string.account_created))
-                authContainerRoot.screensNavigator.navigateToScreen(R.id.action_signup_to_user_details)
+                authContainerRoot.screensNavigator.navigateToScreen(
+                    R.id.action_signup_to_user_details, this
+                )
                 return@observe
             }
 

@@ -5,16 +5,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.ViewModelProvider
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.databinding.FragmentLoginBinding
 import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.clearTextFieldFocus
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewElements
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
-import com.arpansircar.notes_app.presentation.utils.DisplayUtils.showLongToast
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.showShortToast
 import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
@@ -45,7 +42,7 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.signUpPrompt?.setOnClickListener {
-            authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_signup)
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_signup, this)
         }
 
         viewModel.responseObserver.observe(viewLifecycleOwner) {
@@ -56,9 +53,13 @@ class LoginFragment : BaseFragment() {
                 showShortToast(getString(R.string.logged_in))
 
                 if (authContainerRoot.userDisplayName == null) {
-                    authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_user_details)
+                    authContainerRoot.screensNavigator.navigateToScreen(
+                        R.id.action_login_to_user_details, this
+                    )
                 } else {
-                    authContainerRoot.screensNavigator.navigateToScreen(R.id.action_login_to_home)
+                    authContainerRoot.screensNavigator.navigateToScreen(
+                        R.id.action_login_to_home, this
+                    )
                 }
                 return@observe
             }
@@ -103,9 +104,9 @@ class LoginFragment : BaseFragment() {
         if (authContainerRoot.currentUser == null) return
 
         if (authContainerRoot.currentUser != null && authContainerRoot.userDisplayName.isNullOrEmpty()) {
-            authContainerRoot.screensNavigator.navigateToScreen(R.id.fragment_user_details)
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.fragment_user_details, this)
         } else {
-            authContainerRoot.screensNavigator.navigateToScreen(R.id.fragment_home)
+            authContainerRoot.screensNavigator.navigateToScreen(R.id.fragment_home, this)
         }
     }
 
@@ -114,7 +115,7 @@ class LoginFragment : BaseFragment() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    authContainerRoot.screensNavigator.triggerActivityFinish()
+                    authContainerRoot.screensNavigator.triggerActivityFinish(this@LoginFragment)
                 }
             })
 

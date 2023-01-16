@@ -1,11 +1,12 @@
 package com.arpansircar.notes_app.di
 
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import com.arpansircar.notes_app.presentation.ScreensNavigator
-import com.arpansircar.notes_app.presentation.utils.DialogManager
+import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 import com.arpansircar.notes_app.presentation.viewmodel.factory.AccountViewModelFactory
 import com.arpansircar.notes_app.presentation.viewmodel.factory.AddEditNoteViewModelFactory
 import com.arpansircar.notes_app.presentation.viewmodel.factory.EditUserDetailViewModelFactory
@@ -23,9 +24,9 @@ class HomeContainerRoot(
 
     private val firebaseContainerRoot get() = FirebaseContainerRoot()
 
-    val dialogManager by lazy { DialogManager() }
+    val dialogManager by lazy { applicationContainerRoot.dialogManager }
 
-    val screensNavigator: ScreensNavigator by lazy { ScreensNavigator(fragment) }
+    val screensNavigator: ScreensNavigator by lazy { applicationContainerRoot.screensNavigator }
 
     val firebaseAuth get() = firebaseContainerRoot.firebaseAuth
 
@@ -34,13 +35,22 @@ class HomeContainerRoot(
             notesDao, firebaseContainerRoot, datastoreContainer, authInvoker, firebaseAuth
         )
 
-    val homeViewModelFactory: HomeViewModelFactory = HomeViewModelFactory(homeRepository)
+    private val homeViewModelFactory: HomeViewModelFactory by lazy {
+        HomeViewModelFactory(homeRepository)
+    }
 
-    val addEditNoteViewModelFactory: AddEditNoteViewModelFactory =
+    private val addEditNoteViewModelFactory: AddEditNoteViewModelFactory by lazy {
         AddEditNoteViewModelFactory(homeRepository)
+    }
 
-    val accountViewModelFactory: AccountViewModelFactory = AccountViewModelFactory(homeRepository)
+    private val accountViewModelFactory: AccountViewModelFactory by lazy {
+        AccountViewModelFactory(homeRepository)
+    }
 
-    val editUserDetailViewModelFactory: EditUserDetailViewModelFactory =
+    private val editUserDetailViewModelFactory: EditUserDetailViewModelFactory by lazy {
         EditUserDetailViewModelFactory(homeRepository)
+    }
+
+    val homeViewModel: HomeViewModel
+        get() = ViewModelProvider(fragment, homeViewModelFactory)[HomeViewModel::class.java]
 }

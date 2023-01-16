@@ -5,12 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arpansircar.notes_app.domain.repositories.AuthRepository
+import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserDetailsViewModel(private val authRepository: AuthRepository) : ViewModel() {
+class UserDetailsViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     private val _responseObserver: MutableLiveData<String?> = MutableLiveData()
     val responseObserver: LiveData<String?> = _responseObserver
@@ -31,7 +32,7 @@ class UserDetailsViewModel(private val authRepository: AuthRepository) : ViewMod
             .build()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val response: String? = authRepository.updateUserProfile(changeRequest)
+            val response: String? = homeRepository.updateUserProfile(changeRequest)
             _responseObserver.postValue(response)
         }
     }

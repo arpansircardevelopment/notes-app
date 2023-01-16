@@ -4,17 +4,16 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-class ScreensNavigator(private val fragment: Fragment) {
-    fun navigateToScreen(destinationID: Int) {
+class ScreensNavigator {
+    fun navigateToScreen(destinationID: Int, fragment: Fragment) {
         fragment.findNavController().navigate(destinationID)
     }
 
-    fun navigateWithBundle(destinationID: Int, bundle: Bundle) {
+    fun navigateWithBundle(destinationID: Int, bundle: Bundle, fragment: Fragment) {
         fragment.findNavController().navigate(destinationID, bundle)
     }
 
-
-    fun triggerActivityFinish() {
+    fun triggerActivityFinish(fragment: Fragment) {
         fragment.requireActivity().finish()
     }
 }

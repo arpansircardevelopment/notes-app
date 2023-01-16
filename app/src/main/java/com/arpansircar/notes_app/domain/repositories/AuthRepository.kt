@@ -27,10 +27,4 @@ class AuthRepository(
             ).await()
         }
     }
-
-    suspend fun updateUserProfile(request: UserProfileChangeRequest): String? {
-        return authInvoker.invoke {
-            firebaseAuth.currentUser?.updateProfile(request)?.await()
-        }
-    }
 }

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.arpansircar.notes_app.data.network.AuthInvoker
 import com.arpansircar.notes_app.domain.repositories.AuthRepository
-import com.arpansircar.notes_app.presentation.ScreensNavigator
+import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
 import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
 import com.arpansircar.notes_app.presentation.viewmodel.SignupViewModel
 import com.arpansircar.notes_app.presentation.viewmodel.factory.LoginViewModelFactory

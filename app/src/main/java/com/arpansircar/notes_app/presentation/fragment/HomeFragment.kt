@@ -102,7 +102,11 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
 
                 R.id.item_delete -> {
                     homeContainerRoot.dialogManager.displayDeleteDialog(
-                        childFragmentManager, this, DIALOG_TYPE_DELETE, note, position
+                        childFragmentManager,
+                        this,
+                        DIALOG_TYPE_DELETE,
+                        note,
+                        position
                     )
                 }
             }

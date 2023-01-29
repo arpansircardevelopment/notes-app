@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.presentation
+package com.arpansircar.notes_app.presentation.utils
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

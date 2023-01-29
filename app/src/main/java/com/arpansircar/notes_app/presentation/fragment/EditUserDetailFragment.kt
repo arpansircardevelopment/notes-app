@@ -25,7 +25,6 @@ class EditUserDetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = homeContainerRoot.editUserDetailViewModel
         detailType = arguments?.getString(ConstantsBase.EDIT_TYPE)
     }

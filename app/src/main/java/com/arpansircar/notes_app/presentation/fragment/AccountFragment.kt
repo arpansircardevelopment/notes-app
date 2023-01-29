@@ -24,7 +24,6 @@ class AccountFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         initializeBackPressedDispatcher(this@AccountFragment)
         viewModel = homeContainerRoot.accountViewModel
-
         firebaseAuth = homeContainerRoot.firebaseAuth
         authStateListener = AuthStateListener { auth ->
             auth.currentUser?.let { it ->

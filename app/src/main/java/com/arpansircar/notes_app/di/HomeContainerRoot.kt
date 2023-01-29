@@ -1,13 +1,11 @@
 package com.arpansircar.notes_app.di
 
-import android.accounts.Account
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
-import com.arpansircar.notes_app.presentation.ScreensNavigator
+import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
 import com.arpansircar.notes_app.presentation.viewmodel.*
 import com.arpansircar.notes_app.presentation.viewmodel.factory.*
 

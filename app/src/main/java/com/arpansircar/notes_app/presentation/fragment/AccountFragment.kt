@@ -22,15 +22,7 @@ class AccountFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    homeContainerRoot.screensNavigator.triggerActivityFinish(this@AccountFragment)
-                }
-            })
-
+        initializeBackPressedDispatcher(this@AccountFragment)
         viewModel = homeContainerRoot.accountViewModel
 
         firebaseAuth = homeContainerRoot.firebaseAuth

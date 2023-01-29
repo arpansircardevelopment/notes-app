@@ -5,7 +5,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.databinding.FragmentLoginBinding
 import com.arpansircar.notes_app.presentation.base.BaseFragment
@@ -28,7 +27,7 @@ class LoginFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializeNavigation()
-        initializeBackPressedDispatcher()
+        initializeBackPressedDispatcher(this@LoginFragment)
         viewModel = authContainerRoot.loginViewModel
     }
 
@@ -109,15 +108,6 @@ class LoginFragment : BaseFragment() {
             authContainerRoot.screensNavigator.navigateToScreen(R.id.fragment_home, this)
         }
     }
-
-    private fun initializeBackPressedDispatcher() =
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    authContainerRoot.screensNavigator.triggerActivityFinish(this@LoginFragment)
-                }
-            })
 
     private fun showUIElements(isEnabled: Boolean) {
         enableViewElements(listOf(binding?.btLogin, binding?.signUpPrompt), isEnabled)

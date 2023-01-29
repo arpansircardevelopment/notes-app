@@ -32,15 +32,8 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initializeBackPressedDispatcher(this@HomeFragment)
         viewModel = homeContainerRoot.homeViewModel
-
-        requireActivity().onBackPressedDispatcher.addCallback(this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    homeContainerRoot.screensNavigator.triggerActivityFinish(this@HomeFragment)
-                }
-            })
     }
 
     override fun onCreateView(

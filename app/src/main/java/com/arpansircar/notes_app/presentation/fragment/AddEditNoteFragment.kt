@@ -31,11 +31,7 @@ class AddEditNoteFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(
-            this,
-            homeContainerRoot.addEditNoteViewModelFactory
-        )[AddEditNoteViewModel::class.java]
+        viewModel = homeContainerRoot.addEditNoteViewModel
 
         noteType = arguments?.getString(NOTE_TYPE)
         noteID = arguments?.getInt(NOTE_ID, -1)

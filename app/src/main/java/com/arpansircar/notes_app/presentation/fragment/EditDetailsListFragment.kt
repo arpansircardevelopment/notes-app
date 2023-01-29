@@ -48,7 +48,8 @@ class EditDetailsListFragment : BaseFragment() {
     private fun navigateToEditUserDetails(bundle: Bundle) {
         homeContainerRoot.screensNavigator.navigateWithBundle(
             R.id.action_edit_details_list_to_edit_user_detail,
-            bundle
+            bundle,
+            this
         )
     }
 }

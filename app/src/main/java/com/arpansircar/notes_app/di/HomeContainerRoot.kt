@@ -1,16 +1,15 @@
 package com.arpansircar.notes_app.di
 
+import android.accounts.Account
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
 import com.arpansircar.notes_app.domain.repositories.HomeRepository
 import com.arpansircar.notes_app.presentation.ScreensNavigator
-import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
-import com.arpansircar.notes_app.presentation.viewmodel.factory.AccountViewModelFactory
-import com.arpansircar.notes_app.presentation.viewmodel.factory.AddEditNoteViewModelFactory
-import com.arpansircar.notes_app.presentation.viewmodel.factory.EditUserDetailViewModelFactory
-import com.arpansircar.notes_app.presentation.viewmodel.factory.HomeViewModelFactory
+import com.arpansircar.notes_app.presentation.viewmodel.*
+import com.arpansircar.notes_app.presentation.viewmodel.factory.*
 
 class HomeContainerRoot(
     private val applicationContainerRoot: ApplicationContainerRoot, private val fragment: Fragment
@@ -47,10 +46,33 @@ class HomeContainerRoot(
         AccountViewModelFactory(homeRepository)
     }
 
+    private val userDetailViewModelFactory: UserDetailViewModelFactory by lazy {
+        UserDetailViewModelFactory(homeRepository)
+    }
+
     private val editUserDetailViewModelFactory: EditUserDetailViewModelFactory by lazy {
         EditUserDetailViewModelFactory(homeRepository)
     }
 
     val homeViewModel: HomeViewModel
         get() = ViewModelProvider(fragment, homeViewModelFactory)[HomeViewModel::class.java]
+
+    val addEditNoteViewModel: AddEditNoteViewModel
+        get() = ViewModelProvider(
+            fragment, addEditNoteViewModelFactory
+        )[AddEditNoteViewModel::class.java]
+
+    val accountViewModel: AccountViewModel
+        get() = ViewModelProvider(fragment, accountViewModelFactory)[AccountViewModel::class.java]
+
+    val userDetailViewModel: UserDetailsViewModel
+        get() = ViewModelProvider(
+            fragment,
+            userDetailViewModelFactory
+        )[UserDetailsViewModel::class.java]
+
+    val editUserDetailViewModel: EditUserDetailViewModel
+        get() = ViewModelProvider(
+            fragment, editUserDetailViewModelFactory
+        )[EditUserDetailViewModel::class.java]
 }

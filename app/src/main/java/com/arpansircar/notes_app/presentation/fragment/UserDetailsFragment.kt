@@ -18,10 +18,7 @@ class UserDetailsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        viewModel = ViewModelProvider(
-//            this,
-//            authContainerRoot.userViewModelFactory
-//        )[UserDetailsViewModel::class.java]
+        viewModel = homeContainerRoot.userDetailViewModel
     }
 
     override fun onCreateView(

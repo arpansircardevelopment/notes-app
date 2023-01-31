@@ -23,7 +23,6 @@ class SignupFragment : BaseFragment() {
     // Dependencies
     lateinit var viewModel: SignupViewModel
     lateinit var screensNavigator: ScreensNavigator
-    var currentUser: FirebaseUser? = null
 
     // Data Structures and Variables
     private var email: String? = null

@@ -14,9 +14,7 @@ class AuthInjector(private val containerRoot: AuthContainerRoot) {
     }
 
     fun inject(fragment: SignupFragment) {
-        fragment.currentUser = containerRoot.currentUser
         fragment.viewModel = containerRoot.signupViewModel
         fragment.screensNavigator = containerRoot.screensNavigator
     }
-
 }

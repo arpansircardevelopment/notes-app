@@ -23,17 +23,17 @@ import com.google.firebase.auth.FirebaseUser
 class LoginFragment : BaseFragment(), AuthStateListener {
 
     // Dependencies
-    lateinit var viewModel: LoginViewModel
-    lateinit var screensNavigator: ScreensNavigator
     var currentUser: FirebaseUser? = null
     var firebaseAuth: FirebaseAuth? = null
+    lateinit var viewModel: LoginViewModel
+    lateinit var screensNavigator: ScreensNavigator
 
     // Data Structures and Variables
-    private var binding: FragmentLoginBinding? = null
-    private val watcherHashSet = HashSet<TextWatcher>()
     private var email: String? = null
     private var password: String? = null
     private var userDisplayName: String? = null
+    private var binding: FragmentLoginBinding? = null
+    private val watcherHashSet = HashSet<TextWatcher>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

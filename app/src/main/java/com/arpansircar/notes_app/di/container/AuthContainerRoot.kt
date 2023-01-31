@@ -34,8 +34,6 @@ class AuthContainerRoot(
 
     val currentUser get() = firebaseContainerRoot.currentUser
 
-    val userDisplayName get() = currentUser?.displayName
-
     val loginViewModel: LoginViewModel
         get() = ViewModelProvider(fragment, loginViewModelFactory)[LoginViewModel::class.java]
 

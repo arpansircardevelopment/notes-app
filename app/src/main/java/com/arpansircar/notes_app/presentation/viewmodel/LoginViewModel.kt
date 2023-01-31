@@ -1,6 +1,5 @@
 package com.arpansircar.notes_app.presentation.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

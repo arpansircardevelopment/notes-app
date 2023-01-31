@@ -4,7 +4,7 @@ import com.arpansircar.notes_app.common.utils.FirebaseUtils
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer
 import com.arpansircar.notes_app.data.local.db.NotesDao
 import com.arpansircar.notes_app.data.network.AuthInvoker
-import com.arpansircar.notes_app.di.FirebaseContainerRoot
+import com.arpansircar.notes_app.di.container.FirebaseContainerRoot
 import com.arpansircar.notes_app.domain.models.Note
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

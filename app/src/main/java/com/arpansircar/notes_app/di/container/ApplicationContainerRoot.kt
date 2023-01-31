@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.di
+package com.arpansircar.notes_app.di.container
 
 import android.app.Application
 import com.arpansircar.notes_app.data.local.datastore.NotesDatastoreContainer

@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.di
+package com.arpansircar.notes_app.di.container
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider

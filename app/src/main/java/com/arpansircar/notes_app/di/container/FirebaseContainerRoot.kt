@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.di
+package com.arpansircar.notes_app.di.container
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

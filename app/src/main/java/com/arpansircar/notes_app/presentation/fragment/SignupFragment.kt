@@ -13,20 +13,27 @@ import com.arpansircar.notes_app.presentation.utils.DisplayUtils.enableViewEleme
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgressUI
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.showShortToast
 import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
+import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
+import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
 import com.arpansircar.notes_app.presentation.viewmodel.SignupViewModel
+import com.google.firebase.auth.FirebaseUser
 
 class SignupFragment : BaseFragment() {
 
-    private var binding: FragmentSignupBinding? = null
-    private lateinit var viewModel: SignupViewModel
-    private val watcherHashSet = HashSet<TextWatcher>()
+    // Dependencies
+    lateinit var viewModel: SignupViewModel
+    lateinit var screensNavigator: ScreensNavigator
+    var currentUser: FirebaseUser? = null
 
+    // Data Structures and Variables
     private var email: String? = null
     private var password: String? = null
+    private var binding: FragmentSignupBinding? = null
+    private val watcherHashSet = HashSet<TextWatcher>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = authContainerRoot.signupViewModel
+        authInjector.inject(this)
     }
 
     override fun onCreateView(
@@ -39,22 +46,21 @@ class SignupFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.loginPrompt?.setOnClickListener {
-            authContainerRoot.screensNavigator.navigateToScreen(R.id.action_signup_to_login, this)
+            navigateToScreen(R.id.action_signup_to_login)
         }
 
         viewModel.responseObserver.observe(viewLifecycleOwner) {
             shouldShowProgressUI(false)
             showUIElements(true)
 
-            if (it == null) {
-                showShortToast(getString(R.string.account_created))
-                authContainerRoot.screensNavigator.navigateToScreen(
-                    R.id.action_signup_to_user_details, this
-                )
+            if (it != null) {
+                showShortToast(it)
                 return@observe
             }
 
-            showShortToast(it)
+            showShortToast(getString(R.string.account_created))
+            navigateToScreen(R.id.action_signup_to_user_details)
+
         }
     }
 
@@ -147,5 +153,9 @@ class SignupFragment : BaseFragment() {
             binding?.etConfirmPassword?.removeTextChangedListener(it)
         }
         watcherHashSet.clear()
+    }
+
+    private fun navigateToScreen(navID: Int) {
+        screensNavigator.navigateToScreen(navID, this)
     }
 }

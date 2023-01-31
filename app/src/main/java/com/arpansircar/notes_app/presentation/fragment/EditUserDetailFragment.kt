@@ -6,14 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase
-import com.arpansircar.notes_app.common.NotesApplication
 import com.arpansircar.notes_app.databinding.FragmentEditUserDetailBinding
-import com.arpansircar.notes_app.di.ApplicationContainerRoot
-import com.arpansircar.notes_app.di.HomeContainerRoot
 import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.viewmodel.EditUserDetailViewModel
 

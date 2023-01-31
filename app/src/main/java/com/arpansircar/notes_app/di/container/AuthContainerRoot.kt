@@ -1,4 +1,4 @@
-package com.arpansircar.notes_app.di
+package com.arpansircar.notes_app.di.container
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +18,7 @@ class AuthContainerRoot(
 
     private val firebaseContainerRoot get() = FirebaseContainerRoot()
 
-    private val firebaseAuth get() = firebaseContainerRoot.firebaseAuth
+    val firebaseAuth get() = firebaseContainerRoot.firebaseAuth
 
     private val authRepository: AuthRepository by lazy { AuthRepository(firebaseAuth, authInvoker) }
 

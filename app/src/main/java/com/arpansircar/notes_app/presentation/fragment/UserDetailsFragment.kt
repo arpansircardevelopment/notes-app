@@ -13,12 +13,13 @@ import com.arpansircar.notes_app.presentation.viewmodel.UserDetailsViewModel
 
 class UserDetailsFragment : BaseFragment() {
 
+    lateinit var viewModel: UserDetailsViewModel
+
     private var binding: FragmentUserDetailsBinding? = null
-    private lateinit var viewModel: UserDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = homeContainerRoot.userDetailViewModel
+        homeInjector.inject(this)
     }
 
     override fun onCreateView(

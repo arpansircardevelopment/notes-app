@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.databinding.FragmentAccountBinding
 import com.arpansircar.notes_app.presentation.base.BaseFragment
+import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
 import com.arpansircar.notes_app.presentation.viewmodel.AccountViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
@@ -15,16 +15,17 @@ import com.google.firebase.auth.FirebaseUser
 
 class AccountFragment : BaseFragment() {
 
+    lateinit var viewModel: AccountViewModel
+    var firebaseAuth: FirebaseAuth? = null
+    lateinit var screensNavigator: ScreensNavigator
+
     private var binding: FragmentAccountBinding? = null
-    private lateinit var viewModel: AccountViewModel
-    private var firebaseAuth: FirebaseAuth? = null
     private var authStateListener: AuthStateListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializeBackPressedDispatcher(this@AccountFragment)
-        viewModel = homeContainerRoot.accountViewModel
-        firebaseAuth = homeContainerRoot.firebaseAuth
+        homeInjector.inject(this)
+        initializeBackPressedDispatcher()
         authStateListener = AuthStateListener { auth ->
             auth.currentUser?.let { it ->
                 setData(it)
@@ -43,18 +44,12 @@ class AccountFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.rlEditProfile?.setOnClickListener {
-            homeContainerRoot.screensNavigator.navigateToScreen(
-                R.id.action_account_to_edit_details_list,
-                this@AccountFragment
-            )
+            screensNavigator.navigateToScreen(R.id.action_account_to_edit_details_list)
         }
 
         binding?.rlSignOut?.setOnClickListener {
             viewModel.userSignOut()
-            homeContainerRoot.screensNavigator.navigateToScreen(
-                R.id.action_account_to_login,
-                this@AccountFragment
-            )
+            screensNavigator.navigateToScreen(R.id.action_account_to_login)
         }
     }
 

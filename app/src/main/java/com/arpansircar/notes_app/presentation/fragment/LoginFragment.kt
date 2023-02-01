@@ -2,7 +2,6 @@ package com.arpansircar.notes_app.presentation.fragment
 
 import android.os.Bundle
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +38,7 @@ class LoginFragment : BaseFragment(), AuthStateListener {
         super.onCreate(savedInstanceState)
         authInjector.inject(this)
         initializeNavigation()
-        initializeBackPressedDispatcher(this@LoginFragment)
+        initializeBackPressedDispatcher()
     }
 
     override fun onCreateView(
@@ -175,6 +174,6 @@ class LoginFragment : BaseFragment(), AuthStateListener {
     }
 
     private fun navigateToScreen(navID: Int) {
-        screensNavigator.navigateToScreen(navID, this)
+        screensNavigator.navigateToScreen(navID)
     }
 }

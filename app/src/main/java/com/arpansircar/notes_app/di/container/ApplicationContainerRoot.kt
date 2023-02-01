@@ -18,8 +18,6 @@ class ApplicationContainerRoot(application: Application) {
 
     val authInvoker: AuthInvoker by lazy { AuthInvoker() }
 
-    val screensNavigator: ScreensNavigator by lazy { ScreensNavigator() }
-
     val dialogManager by lazy { DialogManager() }
 
 }

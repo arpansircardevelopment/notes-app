@@ -14,13 +14,14 @@ import com.arpansircar.notes_app.presentation.viewmodel.EditUserDetailViewModel
 
 class EditUserDetailFragment : BaseFragment() {
 
+    lateinit var viewModel: EditUserDetailViewModel
+
     private var detailType: String? = null
     private var binding: FragmentEditUserDetailBinding? = null
-    private lateinit var viewModel: EditUserDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = homeContainerRoot.editUserDetailViewModel
+        homeInjector.inject(this)
         detailType = arguments?.getString(ConstantsBase.EDIT_TYPE)
     }
 
@@ -56,9 +57,7 @@ class EditUserDetailFragment : BaseFragment() {
     private fun setUIData(string: String?) {
         binding?.apply {
             tvHeader.text = getString(R.string.enter_new_detail_message, string)
-
             tilUserDetail.hint = capitalizeStrings(string)
-
             btUpdateDetails.text = getString(R.string.update_custom_details, string)
         }
     }

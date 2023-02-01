@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
@@ -22,18 +21,23 @@ import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
 import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
+import com.arpansircar.notes_app.presentation.utils.DialogManager
+import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 
 class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCallback {
 
+    lateinit var viewModel: HomeViewModel
+    lateinit var dialogManager: DialogManager
+    lateinit var screensNavigator: ScreensNavigator
+
     private var binding: FragmentHomeBinding? = null
-    private lateinit var viewModel: HomeViewModel
     private var adapter: HomeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializeBackPressedDispatcher(this@HomeFragment)
-        viewModel = homeContainerRoot.homeViewModel
+        homeInjector.inject(this)
+        initializeBackPressedDispatcher()
     }
 
     override fun onCreateView(
@@ -63,13 +67,13 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
                 layoutManager = LinearLayoutManager(requireContext())
             }
 
-            homeContainerRoot.dialogManager.hideProgressDialog()
+            dialogManager.hideProgressDialog()
         }
 
         viewModel.syncedLiveData.observe(viewLifecycleOwner) {
-            homeContainerRoot.dialogManager.hideProgressDialog()
+            dialogManager.hideProgressDialog()
             if (!it) {
-                homeContainerRoot.dialogManager.showProgressDialog(
+                dialogManager.showProgressDialog(
                     childFragmentManager, getString(R.string.loading_your_notes)
                 )
                 viewModel.downloadNotes()
@@ -77,10 +81,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
         }
 
         binding?.btAdd?.setOnClickListener {
-            homeContainerRoot.screensNavigator.navigateWithBundle(
+            screensNavigator.navigateWithBundle(
                 R.id.action_home_to_add_edit,
-                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null),
-                this
+                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
             )
         }
     }
@@ -93,15 +96,14 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
             when (item.itemId) {
 
                 R.id.item_edit -> {
-                    homeContainerRoot.screensNavigator.navigateWithBundle(
+                    screensNavigator.navigateWithBundle(
                         R.id.action_home_to_add_edit,
-                        bundleOf(NOTE_TYPE to NOTE_TYPE_EDIT, NOTE_ID to note.id),
-                        this
+                        bundleOf(NOTE_TYPE to NOTE_TYPE_EDIT, NOTE_ID to note.id)
                     )
                 }
 
                 R.id.item_delete -> {
-                    homeContainerRoot.dialogManager.displayDeleteDialog(
+                    dialogManager.displayDeleteDialog(
                         childFragmentManager,
                         this,
                         DIALOG_TYPE_DELETE,

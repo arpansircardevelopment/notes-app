@@ -30,7 +30,7 @@ class AuthContainerRoot(
         SignupViewModelFactory(authRepository)
     }
 
-    val screensNavigator: ScreensNavigator by lazy { applicationContainerRoot.screensNavigator }
+    val screensNavigator: ScreensNavigator by lazy { ScreensNavigator(fragment) }
 
     val currentUser get() = firebaseContainerRoot.currentUser
 

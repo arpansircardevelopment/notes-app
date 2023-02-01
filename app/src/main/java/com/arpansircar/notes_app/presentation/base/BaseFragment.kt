@@ -6,6 +6,7 @@ import com.arpansircar.notes_app.di.container.ApplicationContainerRoot
 import com.arpansircar.notes_app.di.container.AuthContainerRoot
 import com.arpansircar.notes_app.di.container.HomeContainerRoot
 import com.arpansircar.notes_app.di.injector.AuthInjector
+import com.arpansircar.notes_app.di.injector.HomeInjector
 
 open class BaseFragment : Fragment() {
 
@@ -19,15 +20,17 @@ open class BaseFragment : Fragment() {
 
     protected val authInjector: AuthInjector by lazy { AuthInjector(authContainerRoot) }
 
-    protected val homeContainerRoot: HomeContainerRoot by lazy {
+    private val homeContainerRoot: HomeContainerRoot by lazy {
         HomeContainerRoot(applicationContainerRoot, this)
     }
 
-    protected fun initializeBackPressedDispatcher(fragmentContext: Fragment) {
+    protected val homeInjector: HomeInjector by lazy { HomeInjector(homeContainerRoot) }
+
+    protected fun initializeBackPressedDispatcher() {
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    homeContainerRoot.screensNavigator.triggerActivityFinish(fragmentContext)
+                    homeContainerRoot.screensNavigator.triggerActivityFinish()
                 }
             })
     }

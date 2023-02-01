@@ -10,7 +10,8 @@ import com.arpansircar.notes_app.presentation.viewmodel.*
 import com.arpansircar.notes_app.presentation.viewmodel.factory.*
 
 class HomeContainerRoot(
-    private val applicationContainerRoot: ApplicationContainerRoot, private val fragment: Fragment
+    private val applicationContainerRoot: ApplicationContainerRoot,
+    private val fragment: Fragment
 ) {
 
     private val notesDao: NotesDao by lazy { applicationContainerRoot.notesDao }
@@ -23,7 +24,7 @@ class HomeContainerRoot(
 
     val dialogManager by lazy { applicationContainerRoot.dialogManager }
 
-    val screensNavigator: ScreensNavigator by lazy { applicationContainerRoot.screensNavigator }
+    val screensNavigator: ScreensNavigator by lazy { ScreensNavigator(fragment) }
 
     val firebaseAuth get() = firebaseContainerRoot.firebaseAuth
 

@@ -14,9 +14,7 @@ import com.arpansircar.notes_app.presentation.utils.DisplayUtils.shouldShowProgr
 import com.arpansircar.notes_app.presentation.utils.DisplayUtils.showShortToast
 import com.arpansircar.notes_app.presentation.utils.ListenerUtils.getWatcher
 import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
-import com.arpansircar.notes_app.presentation.viewmodel.LoginViewModel
 import com.arpansircar.notes_app.presentation.viewmodel.SignupViewModel
-import com.google.firebase.auth.FirebaseUser
 
 class SignupFragment : BaseFragment() {
 
@@ -155,6 +153,6 @@ class SignupFragment : BaseFragment() {
     }
 
     private fun navigateToScreen(navID: Int) {
-        screensNavigator.navigateToScreen(navID, this)
+        screensNavigator.navigateToScreen(navID)
     }
 }

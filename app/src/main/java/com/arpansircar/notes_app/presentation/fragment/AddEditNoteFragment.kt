@@ -13,20 +13,23 @@ import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE_EDIT
 import com.arpansircar.notes_app.databinding.FragmentAddEditNoteBinding
 import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.base.BaseFragment
+import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
 import com.arpansircar.notes_app.presentation.viewmodel.AddEditNoteViewModel
 import java.util.*
 
 class AddEditNoteFragment : BaseFragment() {
 
+    lateinit var viewModel: AddEditNoteViewModel
+    lateinit var screensNavigator: ScreensNavigator
+
     private var binding: FragmentAddEditNoteBinding? = null
-    private lateinit var viewModel: AddEditNoteViewModel
     private var noteType: String? = null
     private var noteID: Int? = null
     private var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = homeContainerRoot.addEditNoteViewModel
+        homeInjector.inject(this)
         noteType = arguments?.getString(NOTE_TYPE)
         noteID = arguments?.getInt(NOTE_ID, -1)
     }
@@ -56,11 +59,11 @@ class AddEditNoteFragment : BaseFragment() {
         }
 
         viewModel.notesLiveData.observe(viewLifecycleOwner) {
-            NavHostFragment.findNavController(this@AddEditNoteFragment).navigateUp()
+            screensNavigator.navigateUp()
         }
 
         viewModel.updateNoteLiveData.observe(viewLifecycleOwner) {
-            NavHostFragment.findNavController(this@AddEditNoteFragment).navigateUp()
+            screensNavigator.navigateUp()
         }
 
         viewModel.fetchNotesLiveData.observe(viewLifecycleOwner) {

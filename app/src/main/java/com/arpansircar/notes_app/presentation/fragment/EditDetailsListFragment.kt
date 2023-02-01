@@ -9,10 +9,18 @@ import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase
 import com.arpansircar.notes_app.databinding.FragmentEditDetailsListBinding
 import com.arpansircar.notes_app.presentation.base.BaseFragment
+import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
 
 class EditDetailsListFragment : BaseFragment() {
 
+    lateinit var screensNavigator: ScreensNavigator
+
     private var binding: FragmentEditDetailsListBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        homeInjector.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -46,10 +54,9 @@ class EditDetailsListFragment : BaseFragment() {
     }
 
     private fun navigateToEditUserDetails(bundle: Bundle) {
-        homeContainerRoot.screensNavigator.navigateWithBundle(
+        screensNavigator.navigateWithBundle(
             R.id.action_edit_details_list_to_edit_user_detail,
-            bundle,
-            this
+            bundle
         )
     }
 }

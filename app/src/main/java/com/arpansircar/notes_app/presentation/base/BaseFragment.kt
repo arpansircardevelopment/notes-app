@@ -27,7 +27,8 @@ open class BaseFragment : Fragment() {
     protected val homeInjector: HomeInjector by lazy { HomeInjector(homeContainerRoot) }
 
     protected fun initializeBackPressedDispatcher() {
-        requireActivity().onBackPressedDispatcher.addCallback(this,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     homeContainerRoot.screensNavigator.triggerActivityFinish()

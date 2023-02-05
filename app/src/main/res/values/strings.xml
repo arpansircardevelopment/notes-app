@@ -1,57 +1,58 @@
 <resources>
-    <string name="app_name">Notes</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name" translatable="false">Notes</string>
+    <string name="action_settings" translatable="false">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="login">Login</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="sign_up_prompt">Don\'t have an account? Signup here!</string>
-    <string name="login_prompt">Already have an account? Login here!</string>
+    <string name="first_fragment_label" translatable="false">First Fragment</string>
+    <string name="second_fragment_label" translatable="false">Second Fragment</string>
+    <string name="next" translatable="false">Next</string>
+    <string name="previous" translatable="false">Previous</string>
+    <string name="username" translatable="false">Username</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="login" translatable="false">Login</string>
+    <string name="confirm_password" translatable="false">Confirm Password</string>
+    <string name="sign_up" translatable="false">Sign Up</string>
+    <string name="sign_up_prompt" translatable="false">Don\'t have an account? Signup here!</string>
+    <string name="login_prompt" translatable="false">Already have an account? Login here!</string>
 
-    <string name="field_cannot_be_empty">Field cannot be empty</string>
-    <string name="email">Email</string>
-    <string name="account_created">Account Created</string>
-    <string name="logged_in">Logged In</string>
-    <string name="log_out">Log Out</string>
-    <string name="update_details">Update Details</string>
-    <string name="update_custom_details">Update %1$s</string>
-    <string name="enter_your_name">Enter your name</string>
-    <string name="enter_your_phone_number">Phone Number</string>
-    <string name="name">Display Name</string>
-    <string name="india_country_code">+91</string>
-    <string name="add_note">Add note</string>
-    <string name="home">Home</string>
-    <string name="account">Account</string>
-    <string name="no_notes_text">Add some notes to see them over here</string>
-    <string name="enter_note_title">Enter note title here</string>
-    <string name="insert_note">Insert Note</string>
-    <string name="enter_note_detail">Enter note detail here</string>
-    <string name="edit_note">Edit Note</string>
-    <string name="delete_note">Delete Note</string>
-    <string name="update_note">Update Note</string>
-    <string name="delete_dialog_message">Are you sure that you want to delete this note?</string>
-    <string name="no">No</string>
-    <string name="yes">Yes</string>
+    <string name="field_cannot_be_empty" translatable="false">Field cannot be empty</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="account_created" translatable="false">Account Created</string>
+    <string name="logged_in" translatable="false">Logged In</string>
+    <string name="log_out" translatable="false">Log Out</string>
+    <string name="update_details" translatable="false">Update Details</string>
+    <string name="update_custom_details" translatable="false">Update %1$s</string>
+    <string name="enter_your_name" translatable="false">Enter your name</string>
+    <string name="enter_your_phone_number" translatable="false">Phone Number</string>
+    <string name="name" translatable="false">Display Name</string>
+    <string name="india_country_code" translatable="false">+91</string>
+    <string name="add_note" translatable="false">Add note</string>
+    <string name="home" translatable="false">Home</string>
+    <string name="account" translatable="false">Account</string>
+    <string name="no_notes_text" translatable="false">Add some notes to see them over here</string>
+    <string name="note_title" translatable="false">Note Title</string>
+    <string name="insert_note" translatable="false">Insert</string>
+    <string name="edit_note" translatable="false">Edit Note</string>
+    <string name="delete_note" translatable="false">Delete Note</string>
+    <string name="update_note" translatable="false">Update Note</string>
+    <string name="delete_dialog_message" translatable="false">Are you sure that you want to delete this note?</string>
+    <string name="no" translatable="false">No</string>
+    <string name="yes" translatable="false">Yes</string>
 
-    <string name="loading_your_notes">Loading Your Notes</string>
-    <string name="syncing_your_data">Syncing Your Data</string>
-    <string name="my_profile">My Profile</string>
-    <string name="edit_profile">Edit Profile</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="edit_display_name">Edit Display Name</string>
-    <string name="edit_email_address">Edit Email Address</string>
-    <string name="edit_password">Edit Password</string>
-    <string name="enter_new_detail_message">Enter your new %1$s here</string>
-    <string name="invalid_details">Invalid Details</string>
+    <string name="loading_your_notes" translatable="false">Loading Your Notes</string>
+    <string name="syncing_your_data" translatable="false">Syncing Your Data</string>
+    <string name="my_profile" translatable="false">My Profile</string>
+    <string name="edit_profile" translatable="false">Edit Profile</string>
+    <string name="sign_out" translatable="false">Sign Out</string>
+    <string name="edit_display_name" translatable="false">Edit Display Name</string>
+    <string name="edit_email_address" translatable="false">Edit Email Address</string>
+    <string name="edit_password" translatable="false">Edit Password</string>
+    <string name="enter_new_detail_message" translatable="false">Enter your new %1$s here</string>
+    <string name="invalid_details" translatable="false">Invalid Details</string>
 
-    <string name="invalid_email">Email entered is invalid</string>
-    <string name="invalid_password">Password entered is invalid</string>
-    <string name="invalid_confirm_password">Confirm password entered is invalid</string>
+    <string name="invalid_email" translatable="false">Email entered is invalid</string>
+    <string name="invalid_password" translatable="false">Password entered is invalid</string>
+    <string name="invalid_confirm_password" translatable="false">Confirm password entered is invalid</string>
+    <string name="note_body">Note Body</string>
+    <string name="start_writing_here">Start writing here</string>
 
 </resources>

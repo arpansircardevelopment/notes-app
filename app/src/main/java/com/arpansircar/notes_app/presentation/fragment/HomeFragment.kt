@@ -50,8 +50,12 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false).also {
-            it.btAdd.imageTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
+            it.btAdd.imageTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
         }
         setUser(firebaseAuth.currentUser)
         syncAndFetchNotes()

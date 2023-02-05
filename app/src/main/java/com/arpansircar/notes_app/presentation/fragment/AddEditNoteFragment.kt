@@ -1,10 +1,11 @@
 package com.arpansircar.notes_app.presentation.fragment
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
+import androidx.core.content.ContextCompat
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_ID
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_TYPE
@@ -39,7 +40,14 @@ class AddEditNoteFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAddEditNoteBinding.inflate(inflater, container, false)
+        binding = FragmentAddEditNoteBinding.inflate(inflater, container, false).also {
+            it.btInsert.imageTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+        }
         setNoteData()
         return binding?.root
     }
@@ -80,7 +88,6 @@ class AddEditNoteFragment : BaseFragment() {
 
     private fun setNoteData() {
         if (noteType == NOTE_TYPE_EDIT && noteID != -1) {
-            binding?.btInsert?.text = getString(R.string.update_note)
             viewModel.getNote(noteID!!)
             return
         }

@@ -1,5 +1,6 @@
 package com.arpansircar.notes_app.presentation.fragment
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,7 +49,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false).also {
+            it.btAdd.imageTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
+        }
         setUser(firebaseAuth.currentUser)
         syncAndFetchNotes()
         return binding?.root
@@ -62,8 +67,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
     private fun setOnClickListeners() {
         binding?.btAdd?.setOnClickListener {
             screensNavigator.navigateWithBundle(
-                R.id.action_home_to_add_edit,
-                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
+                R.id.action_home_to_add_edit, bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
             )
         }
 
@@ -119,11 +123,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
 
                 R.id.item_delete -> {
                     dialogManager.displayDeleteDialog(
-                        childFragmentManager,
-                        this,
-                        DIALOG_TYPE_DELETE,
-                        note,
-                        position
+                        childFragmentManager, this, DIALOG_TYPE_DELETE, note, position
                     )
                 }
             }

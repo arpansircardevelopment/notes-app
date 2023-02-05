@@ -71,6 +71,10 @@
             android:id="@+id/action_home_to_add_edit"
             app:destination="@id/fragment_add_edit" />
 
+        <action
+            android:id="@+id/action_home_to_account"
+            app:destination="@+id/fragment_account" />
+
     </fragment>
 
     <fragment

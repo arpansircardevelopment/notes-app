@@ -25,7 +25,6 @@ class AccountFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeInjector.inject(this)
-        initializeBackPressedDispatcher()
         authStateListener = AuthStateListener { auth ->
             auth.currentUser?.let { it ->
                 setData(it)

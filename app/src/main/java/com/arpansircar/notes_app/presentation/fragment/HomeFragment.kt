@@ -54,8 +54,25 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.notesLiveData.observe(viewLifecycleOwner) {
+        setOnClickListeners()
+        setObservers()
+    }
 
+    private fun setOnClickListeners() {
+        binding?.btAdd?.setOnClickListener {
+            screensNavigator.navigateWithBundle(
+                R.id.action_home_to_add_edit,
+                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
+            )
+        }
+
+        binding?.avProfileImage?.setOnClickListener {
+            screensNavigator.navigateToScreen(R.id.action_home_to_account)
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.notesLiveData.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 binding?.llEmpty?.visibility = View.VISIBLE
                 binding?.rvNotes?.visibility = View.GONE
@@ -82,13 +99,6 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
                 )
                 viewModel.downloadNotes()
             }
-        }
-
-        binding?.btAdd?.setOnClickListener {
-            screensNavigator.navigateWithBundle(
-                R.id.action_home_to_add_edit,
-                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
-            )
         }
     }
 

@@ -24,10 +24,13 @@ import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
 import com.arpansircar.notes_app.presentation.utils.DialogManager
 import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCallback {
 
     lateinit var viewModel: HomeViewModel
+    lateinit var firebaseAuth: FirebaseAuth
     lateinit var dialogManager: DialogManager
     lateinit var screensNavigator: ScreensNavigator
 
@@ -44,6 +47,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setUser(firebaseAuth.currentUser)
         syncAndFetchNotes()
         return binding?.root
     }
@@ -138,6 +142,12 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
         if (dialogType == DIALOG_TYPE_DELETE) {
             viewModel.deleteNote(note)
             adapter?.notifyItemRemoved(notePosition)
+        }
+    }
+
+    private fun setUser(currentUser: FirebaseUser?) {
+        currentUser.let {
+            binding?.avProfileImage?.avatarInitials = it?.displayName?.get(0)?.toString()
         }
     }
 }

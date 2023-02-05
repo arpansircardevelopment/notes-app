@@ -7,6 +7,7 @@
 
     <style name="Theme.Notes" parent="Base.Theme.Notes">
         <item name="fontFamily">@font/montserrat_alternates</item>
+        <item name="android:statusBarColor">@color/black</item>
     </style>
 
 </resources>

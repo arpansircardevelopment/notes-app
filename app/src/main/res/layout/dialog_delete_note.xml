@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_alternates_extrabold"
         android:text="@string/delete_note"
-        android:textColor="@color/red"
+        android:textColor="@color/black"
         android:textSize="19sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,9 +53,9 @@
             style="@style/Widget.Material3.Button.TextButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
             android:layout_marginHorizontal="2sp"
             android:text="@string/yes"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

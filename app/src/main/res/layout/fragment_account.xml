@@ -27,7 +27,7 @@
             android:layout_marginTop="35dp"
             app:avatarViewBorderColor="@color/black"
             app:avatarViewBorderWidth="5dp"
-            app:avatarViewInitialsBackgroundColor="@color/red"
+            app:avatarViewInitialsBackgroundColor="@color/black"
             app:avatarViewInitialsTextStyle="bold"
             app:avatarViewShape="circle"
             app:layout_constraintEnd_toEndOf="parent"

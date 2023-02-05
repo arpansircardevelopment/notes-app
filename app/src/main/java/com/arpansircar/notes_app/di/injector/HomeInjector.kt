@@ -9,6 +9,7 @@ class HomeInjector(private val containerRoot: HomeContainerRoot) {
         fragment.viewModel = containerRoot.homeViewModel
         fragment.dialogManager = containerRoot.dialogManager
         fragment.screensNavigator = containerRoot.screensNavigator
+        fragment.firebaseAuth = containerRoot.firebaseAuth
     }
 
     fun inject(fragment: EditDetailsListFragment) {

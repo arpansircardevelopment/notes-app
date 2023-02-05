@@ -10,6 +10,7 @@ import androidx.annotation.MenuRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase.DIALOG_TYPE_DELETE
 import com.arpansircar.notes_app.common.ConstantsBase.NOTE_ID
@@ -85,7 +86,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
             adapter = HomeAdapter(it, this)
             binding?.rvNotes?.apply {
                 this.adapter = this@HomeFragment.adapter
-                layoutManager = LinearLayoutManager(requireContext())
+                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             }
 
             dialogManager.hideProgressDialog()

@@ -11,7 +11,6 @@ import androidx.annotation.MenuRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.arpansircar.notes_app.R
 import com.arpansircar.notes_app.common.ConstantsBase.DIALOG_TYPE_DELETE
@@ -24,13 +23,18 @@ import com.arpansircar.notes_app.domain.models.Note
 import com.arpansircar.notes_app.presentation.adapter.HomeAdapter
 import com.arpansircar.notes_app.presentation.base.BaseFragment
 import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
+import com.arpansircar.notes_app.presentation.callbacks.HomeScreenCallback
 import com.arpansircar.notes_app.presentation.utils.DialogManager
 import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
+import com.arpansircar.notes_app.presentation.utils.dialogs.HomeScreenBottomSheet
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCallback {
+class HomeFragment : BaseFragment(),
+    HomeAdapter.NotePressedListener,
+    DialogCallback,
+    HomeScreenCallback {
 
     lateinit var viewModel: HomeViewModel
     lateinit var firebaseAuth: FirebaseAuth
@@ -148,7 +152,8 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
     }
 
     override fun onNotePressed(note: Note, view: View, position: Int) {
-        showMenu(view, R.menu.note_options_menu, note, position)
+        val homeBottomSheet = HomeScreenBottomSheet(this)
+        homeBottomSheet.show(childFragmentManager, HomeScreenBottomSheet.CLASS_NAME)
     }
 
     override fun onPositiveButtonClicked(
@@ -164,5 +169,11 @@ class HomeFragment : BaseFragment(), HomeAdapter.NotePressedListener, DialogCall
         currentUser.let {
             binding?.avProfileImage?.avatarInitials = it?.displayName?.get(0)?.toString()
         }
+    }
+
+    override fun onEditNoteOptionClicked() {
+    }
+
+    override fun onDeleteNoteOptionClicked() {
     }
 }

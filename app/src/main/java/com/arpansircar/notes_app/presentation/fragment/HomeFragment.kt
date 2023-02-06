@@ -3,11 +3,8 @@ package com.arpansircar.notes_app.presentation.fragment
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import androidx.annotation.MenuRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
@@ -26,7 +23,6 @@ import com.arpansircar.notes_app.presentation.callbacks.DialogCallback
 import com.arpansircar.notes_app.presentation.callbacks.HomeScreenCallback
 import com.arpansircar.notes_app.presentation.utils.DialogManager
 import com.arpansircar.notes_app.presentation.utils.ScreensNavigator
-import com.arpansircar.notes_app.presentation.utils.dialogs.HomeScreenBottomSheet
 import com.arpansircar.notes_app.presentation.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -75,7 +71,8 @@ class HomeFragment : BaseFragment(),
     private fun setOnClickListeners() {
         binding?.btAdd?.setOnClickListener {
             screensNavigator.navigateWithBundle(
-                R.id.action_home_to_add_edit, bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
+                R.id.action_home_to_add_edit,
+                bundleOf(NOTE_TYPE to NOTE_TYPE_ADD, NOTE_ID to null)
             )
         }
 
@@ -108,37 +105,12 @@ class HomeFragment : BaseFragment(),
             dialogManager.hideProgressDialog()
             if (!it) {
                 dialogManager.showProgressDialog(
-                    childFragmentManager, getString(R.string.loading_your_notes)
+                    childFragmentManager,
+                    getString(R.string.loading_your_notes)
                 )
                 viewModel.downloadNotes()
             }
         }
-    }
-
-    private fun showMenu(view: View, @MenuRes menuRes: Int, note: Note, position: Int) {
-        val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
-
-        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-            when (item.itemId) {
-
-                R.id.item_edit -> {
-                    screensNavigator.navigateWithBundle(
-                        R.id.action_home_to_add_edit,
-                        bundleOf(NOTE_TYPE to NOTE_TYPE_EDIT, NOTE_ID to note.id)
-                    )
-                }
-
-                R.id.item_delete -> {
-                    dialogManager.displayDeleteDialog(
-                        childFragmentManager, this, DIALOG_TYPE_DELETE, note, position
-                    )
-                }
-            }
-            return@setOnMenuItemClickListener true
-        }
-
-        popupMenu.show()
     }
 
     private fun syncAndFetchNotes() {
@@ -152,12 +124,19 @@ class HomeFragment : BaseFragment(),
     }
 
     override fun onNotePressed(note: Note, view: View, position: Int) {
-        val homeBottomSheet = HomeScreenBottomSheet(this)
-        homeBottomSheet.show(childFragmentManager, HomeScreenBottomSheet.CLASS_NAME)
+        dialogManager.displayHomeScreenBottomSheet(
+            childFragmentManager,
+            this,
+            note,
+            position
+        )
     }
 
     override fun onPositiveButtonClicked(
-        dialogType: String, dialogContext: FragmentActivity, note: Note, notePosition: Int
+        dialogType: String,
+        dialogContext: FragmentActivity,
+        note: Note,
+        notePosition: Int
     ) {
         if (dialogType == DIALOG_TYPE_DELETE) {
             viewModel.deleteNote(note)
@@ -171,9 +150,23 @@ class HomeFragment : BaseFragment(),
         }
     }
 
-    override fun onEditNoteOptionClicked() {
+    override fun onEditNoteOptionClicked(noteID: Int) {
+        screensNavigator.navigateWithBundle(
+            R.id.action_home_to_add_edit,
+            bundleOf(
+                NOTE_TYPE to NOTE_TYPE_EDIT,
+                NOTE_ID to noteID
+            )
+        )
     }
 
-    override fun onDeleteNoteOptionClicked() {
+    override fun onDeleteNoteOptionClicked(note: Note, position: Int) {
+        dialogManager.displayDeleteDialog(
+            childFragmentManager,
+            this,
+            DIALOG_TYPE_DELETE,
+            note,
+            position
+        )
     }
 }

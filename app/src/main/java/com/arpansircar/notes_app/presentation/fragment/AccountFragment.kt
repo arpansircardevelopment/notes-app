@@ -1,5 +1,6 @@
 package com.arpansircar.notes_app.presentation.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.arpansircar.notes_app.presentation.viewmodel.AccountViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseUser
+import kotlin.random.Random
 
 class AccountFragment : BaseFragment() {
 
@@ -67,6 +69,16 @@ class AccountFragment : BaseFragment() {
             binding?.tvUserName?.text = it.displayName
             binding?.tvUserEmail?.text = it.email
             binding?.avProfileImage?.avatarInitials = it.displayName?.get(0)?.toString()
+            binding?.avProfileImage?.avatarInitialsBackgroundColor = getRandomColor()
         }
+    }
+
+    private fun getRandomColor(): Int {
+        return Color.argb(
+            255,
+            Random.nextInt(0, 255),
+            Random.nextInt(0, 255),
+            Random.nextInt(0, 255)
+        )
     }
 }

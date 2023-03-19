@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:fontFamily="@font/montserrat_alternates_bold"
             android:padding="15sp"
             android:textAlignment="center"
+            android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -37,8 +39,10 @@
                 android:id="@+id/et_user_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/card_background"
                 android:fontFamily="@font/montserrat_alternates"
                 android:maxLines="1"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>

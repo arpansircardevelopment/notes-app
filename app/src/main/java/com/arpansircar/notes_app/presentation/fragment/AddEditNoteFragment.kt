@@ -36,15 +36,12 @@ class AddEditNoteFragment : BaseFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAddEditNoteBinding.inflate(inflater, container, false).also {
             it.btInsert.imageTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
+                    requireContext(), R.color.white
                 )
             )
         }
@@ -64,6 +61,15 @@ class AddEditNoteFragment : BaseFragment() {
                 updateNote()
                 return@setOnClickListener
             }
+        }
+
+        binding?.btBack?.setOnClickListener {
+            screensNavigator.navigateUp()
+        }
+
+        binding?.btDelete?.setOnClickListener {
+            note?.let { viewModel.deleteNote(it) }
+            screensNavigator.navigateUp()
         }
 
         viewModel.notesLiveData.observe(viewLifecycleOwner) {
@@ -120,8 +126,7 @@ class AddEditNoteFragment : BaseFragment() {
 
     private fun validateData(): Boolean {
         return viewModel.validateData(
-            binding?.etTitle,
-            binding?.etDetail
+            binding?.etTitle, binding?.etDetail
         )
     }
 }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
@@ -68,6 +69,12 @@ class AddEditNoteViewModel(private val homeRepository: HomeRepository) : ViewMod
                 homeRepository.addOrUpdateNotesOnServer(note)
             }
             _updateNoteLiveData.postValue(position)
+        }
+    }
+
+    fun deleteNote(note: Note) {
+        viewModelScope.launch(Dispatchers.IO) {
+            homeRepository.deleteNote(note)
         }
     }
 }

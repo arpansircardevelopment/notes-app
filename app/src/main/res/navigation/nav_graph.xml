@@ -75,7 +75,16 @@
             android:id="@+id/action_home_to_account"
             app:destination="@+id/fragment_account" />
 
+        <action
+            android:id="@+id/action_home_to_note_details"
+            app:destination="@+id/fragment_note_details" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/fragment_note_details"
+        android:name="com.arpansircar.notes_app.presentation.fragment.NoteDetailsFragment"
+        tools:layout="@layout/fragment_note_details" />
 
     <fragment
         android:id="@+id/fragment_account"

@@ -43,24 +43,37 @@ class HomeRepository(
         return notesDao.updateNote(note)
     }
 
-    suspend fun readNotesFromServer() {
-        val snapshot =
-            container.realtimeDb.child("notes").child(container.firebaseAuth.currentUser?.uid!!)
-                .get().await()
+    suspend fun readNotesFromServerAndInsertIntoDb() {
+        val snapshot = container
+            .realtimeDb
+            .child("notes")
+            .child(container.firebaseAuth.currentUser?.uid!!)
+            .get().await()
 
-        insertNotes(FirebaseUtils.convertSnapshotToObject(snapshot))
+        FirebaseUtils.convertSnapshotToObject(snapshot).also {
+            if (it.isNotEmpty()) {
+                insertNotes(it)
+            }
+        }
+
         datastoreContainer.writeToDataStore(true)
     }
 
     fun addOrUpdateNotesOnServer(note: Note) {
         if (note.id != null) note.id = null
 
-        container.realtimeDb.child("notes").child(container.firebaseAuth.currentUser?.uid!!)
+        container
+            .realtimeDb
+            .child("notes")
+            .child(container.firebaseAuth.currentUser?.uid!!)
             .child(note.noteUUID).setValue(note)
     }
 
     fun deleteNoteFromServer(note: Note) {
-        container.realtimeDb.child("notes").child(container.firebaseAuth.currentUser?.uid!!)
+        container
+            .realtimeDb
+            .child("notes")
+            .child(container.firebaseAuth.currentUser?.uid!!)
             .child(note.noteUUID).removeValue()
     }
 

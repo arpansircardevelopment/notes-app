@@ -33,7 +33,7 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     fun downloadNotes() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.readNotesFromServer()
+            repository.readNotesFromServerAndInsertIntoDb()
         }
     }
 
